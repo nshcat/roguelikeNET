@@ -15,7 +15,6 @@ namespace game.Ascii.Native
     
     public static class ConfigurationNative
     {
-        // Marshal.PtrToStringAuto Method (IntPtr), check for IntPtr.Zero
 	    [DllImport("libascii.so")]
 	    public static extern IntPtr configuration_get(EntryType type, string path);
     }
