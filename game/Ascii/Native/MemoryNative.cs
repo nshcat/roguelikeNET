@@ -12,6 +12,6 @@ namespace game.Ascii.Native
         /// </summary>
         /// <param name="p">Pointer to memory block that needs to be freed</param>
         [DllImport("libascii.so")]
-        public static extern void free_memory(IntPtr p);
+        public static extern void free_memory(IntPtr p);  
     }
 }
