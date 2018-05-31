@@ -12,6 +12,7 @@ namespace game
 
             Logger.postMessage(SeverityLevel.Warning, "managed", "Hello from .net!");
             Logger.postMessage(SeverityLevel.Debug, "Hello from .net, without tag!");
+            Logger.postMessage(SeverityLevel.Debug, "managed", "graphics.height: " + Configuration.getValue<uint>("graphics.height"));
             
             while (!RenderContext.shouldClose())
             {
