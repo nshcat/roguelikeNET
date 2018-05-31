@@ -1,4 +1,5 @@
 ﻿using System;
+using game.Ascii;
 
 namespace game
 {
@@ -6,7 +7,18 @@ namespace game
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Engine.initialize(args);
+            Debug.createTestScene();
+
+            Logger.postMessage(SeverityLevel.Warning, "managed", "Hello from .net!");
+            Logger.postMessage(SeverityLevel.Debug, "Hello from .net, without tag!");
+            
+            while (!RenderContext.shouldClose())
+            {
+                RenderContext.beginFrame();
+                Renderer.render();
+                RenderContext.endFrame();
+            }
         }
     }
 }
