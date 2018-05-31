@@ -14,6 +14,8 @@ namespace game
             Logger.postMessage(SeverityLevel.Debug, "Hello from .net, without tag!");
             Logger.postMessage(SeverityLevel.Debug, "managed", "graphics.height: " + Configuration.getValue<uint>("graphics.height"));
             
+            Console.WriteLine(Configuration.getValue<string>("graphics.tileset"));
+            
             Logger.postMessage(SeverityLevel.Debug, "managed", String.Format("User path: {0}", Paths.UserDirectory));
             Logger.postMessage(SeverityLevel.Debug, "managed", String.Format("Data path: {0}", Paths.DataDirectory));
             
