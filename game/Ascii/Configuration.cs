@@ -40,7 +40,7 @@ namespace game.Ascii
             switch (type)
             {
                 case EntryType.String:
-                    return Marshal.PtrToStringAuto(p);
+                    return Marshal.PtrToStringAnsi(p);
                 
                 case EntryType.Bool:
                     return Marshal.ReadByte(p) != 0;
