@@ -6,5 +6,8 @@ namespace game.Ascii.Native
     {
         [DllImport("libascii.so")]
         public static extern void debug_create_test_scene();
+        
+        [DllImport("libascii.so")]
+        public static extern void test_color(ref Color c);
     }
 }

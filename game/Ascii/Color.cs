@@ -9,13 +9,13 @@ namespace game.Ascii
     /// The range for each component is [0, 255].
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public class Color
+    public struct Color
     {
-        private Int32 r;
-        private Int32 g;
-        private Int32 b;
+        private UInt32 r;    
+        private UInt32 g;
+        private UInt32 b;
 
-        public Color(int r, int g, int b)
+        public Color(uint r, uint g, uint b)
         {
             this.r = r;
             this.g = g;
@@ -24,14 +24,7 @@ namespace game.Ascii
             checkRanges();
         }
 
-        public Color()
-        {
-            this.r = 0;
-            this.g = 0;
-            this.b = 0;
-        }
-
-        public int R
+        public uint R
         {
             get => r;
             set
@@ -41,7 +34,7 @@ namespace game.Ascii
             }
         }
 
-        public int G
+        public uint G
         {
             get => g;
             set
@@ -51,7 +44,7 @@ namespace game.Ascii
             }
         }
 
-        public int B
+        public uint B
         {
             get => b;
             set
@@ -63,16 +56,8 @@ namespace game.Ascii
         
         public override bool Equals(object obj)
         {
-            var item = obj as Color;
-
-            if (item == null)
-            {
-                return false;
-            }
-
-            return this.R == item.R &&
-                   this.G == item.G &&
-                   this.B == item.B;
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is Color && Equals((Color) obj);
         }
 
         public override int GetHashCode()
@@ -80,7 +65,22 @@ namespace game.Ascii
             // The invariant states that each component is always in the interval [0, 255]. This
             // allows us to easily construct a hash by bit shifting the components and OR'ing them
             // together.
-            return R | (G << 8) | (B << 16);
+            return (int)(R | (G << 8) | (B << 16));
+        }
+
+        public bool Equals(Color other)
+        {
+            return r == other.r && g == other.g && b == other.b;
+        }
+
+        public static bool operator ==(Color left, Color right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Color left, Color right)
+        {
+            return !left.Equals(right);
         }
 
         private void checkRanges()
