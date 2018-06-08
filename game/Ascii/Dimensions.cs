@@ -6,17 +6,16 @@ using System.Runtime.InteropServices;
 namespace game.Ascii
 {
     /// <summary>
-    /// A class implementing a 2-dimensional vector of unsigned ints that represents a position on
-    /// the 2D screen, in "glyph-space".
+    /// A class implementing a 2-dimensional vector of unsigned ints that represents a set of dimensions in glyphs.
     /// This is equivalent to glm::uvec2 on the C++ side.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct Position
+    public struct Dimensions
     {
         private UInt32 x;
         private UInt32 y;
 
-        public Position(uint x, uint y)
+        public Dimensions(uint x, uint y)
         {
             this.x = x;
             this.y = y;
@@ -34,17 +33,17 @@ namespace game.Ascii
             set => y = value;
         }
 
-        public static bool operator ==(Position left, Position right)
+        public static bool operator ==(Dimensions left, Dimensions right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(Position left, Position right)
+        public static bool operator !=(Dimensions left, Dimensions right)
         {
             return !left.Equals(right);
         }
 
-        public bool Equals(Position other)
+        public bool Equals(Dimensions other)
         {
             return x == other.x && y == other.y;
         }
@@ -52,7 +51,7 @@ namespace game.Ascii
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is Position && Equals((Position) obj);
+            return obj is Dimensions && Equals((Dimensions) obj);
         }
 
         public override int GetHashCode()
@@ -63,6 +62,6 @@ namespace game.Ascii
             }
         }
         
-        public static Position Origin = new Position(0, 0);
+        public static Dimensions Origin = new Dimensions(0, 0);
     }
 }

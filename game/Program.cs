@@ -20,10 +20,7 @@ namespace game
             Logger.postMessage(SeverityLevel.Debug, "managed", String.Format("User path: {0}", Paths.UserDirectory));
             Logger.postMessage(SeverityLevel.Debug, "managed", String.Format("Data path: {0}", Paths.DataDirectory));
             
-            Color c = new Color(128, 128, 128);
-            
-            Ascii.Native.DebugNative.test_color(ref c);
-            
+
             while (!RenderContext.shouldClose())
             {
                 RenderContext.beginFrame();
