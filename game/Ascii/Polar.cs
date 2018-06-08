@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http.Headers;
 
 namespace game.Ascii
 {
@@ -76,6 +77,15 @@ namespace game.Ascii
         public static Polar FromVector(Vector v)
         {
             return v.toPolar();
+        }
+        
+        /// <summary>
+        /// Convert instance to string
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "[r: " + Radius + ", a: " + Angle + "]";
         }
         #endregion
     }

@@ -120,6 +120,15 @@ namespace game.Ascii
         }
 
         /// <summary>
+        /// Convert instance to string
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "[x: " + X + ", y: " + Y + "]";
+        }
+
+        /// <summary>
         /// Convert given polar coordinates to a cartesian vector.
         /// </summary>
         /// <param name="p">Polar coordinates to convert</param>
