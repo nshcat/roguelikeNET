@@ -7,7 +7,8 @@ namespace game.Ascii
 {
     /// <summary>
     /// A class implementing a 2-dimensional vector of unsigned ints that represents a position on
-    /// the 2D screen, in "glyph-space".
+    /// the 2D screen, in "glyph-space". Note that the components cannot not be negative. For that the class
+    /// Vector or PolarVector should be used.
     /// This is equivalent to glm::uvec2 on the C++ side.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
