@@ -9,7 +9,15 @@ namespace game
         static void Main(string[] args)
         {
             Engine.initialize(args);
-            Debug.createTestScene();
+            //Debug.createTestScene();
+
+            for (byte i = 0; i < 20; ++i)
+            {
+                var p = new Position(i, 0);
+                
+                Screen.setTile(p, new Tile(Color.White, Color.Black, 0));
+                Screen.setDepth(p, (byte)(i*2));
+            }
 
             Logger.postMessage(SeverityLevel.Warning, "managed", "Hello from .net!");
             Logger.postMessage(SeverityLevel.Debug, "Hello from .net, without tag!");
@@ -23,6 +31,7 @@ namespace game
 
             while (!RenderContext.shouldClose())
             {
+                RenderContext.pumpEvents();
                 RenderContext.beginFrame();
                 Renderer.render();
                 RenderContext.endFrame();
