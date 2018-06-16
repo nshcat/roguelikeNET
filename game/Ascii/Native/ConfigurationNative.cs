@@ -15,7 +15,7 @@ namespace game.Ascii.Native
     
     public static class ConfigurationNative
     {
-	    [DllImport("libascii.so")]
+	    [DllImport("libascii")]
 	    public static extern IntPtr configuration_get(EntryType type, string path);
     }
 }

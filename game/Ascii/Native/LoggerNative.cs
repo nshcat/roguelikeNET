@@ -5,7 +5,7 @@ namespace game.Ascii.Native
 {   
     public static class LoggerNative
     {
-        [DllImport("libascii.so")]      
+        [DllImport("libascii")]      
         public static extern void logger_post_message(SeverityLevel lvl, string tag, string msg);
     }
 }

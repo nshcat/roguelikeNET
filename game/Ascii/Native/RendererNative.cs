@@ -4,7 +4,7 @@ namespace game.Ascii.Native
 {
     public static class RendererNative
     {
-        [DllImport("libascii.so")]
+        [DllImport("libascii")]
         public static extern void renderer_render();
     }
 }

@@ -1,41 +1,71 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using game.Ascii;
 
 namespace game
 {
     class Program
     {
-        static void Main(string[] args)
+        private DateTime lastFrame;
+        private bool isFirstFrame = true;
+        private readonly long millisPerTick = 50L;
+        private long leftoverTime;
+        
+        public Scene CurrentScene
+        {
+            get;
+        }
+
+        public Program(Scene s)
+        {
+            CurrentScene = s;
+        }
+
+        public void run(string[] args)
         {
             Engine.initialize(args);
-            //Debug.createTestScene();
-
-            for (byte i = 0; i < 20; ++i)
-            {
-                var p = new Position(i, 0);
-                
-                Screen.setTile(p, new Tile(Color.White, Color.Black, 0));
-                Screen.setDepth(p, (byte)(i*2));
-            }
-
-            Logger.postMessage(SeverityLevel.Warning, "managed", "Hello from .net!");
-            Logger.postMessage(SeverityLevel.Debug, "Hello from .net, without tag!");
-            Logger.postMessage(SeverityLevel.Debug, "managed", "graphics.height: " + Configuration.getValue<uint>("graphics.height"));
             
-            Console.WriteLine(Configuration.getValue<string>("graphics.tileset"));
-            
-            Logger.postMessage(SeverityLevel.Debug, "managed", String.Format("User path: {0}", Paths.UserDirectory));
-            Logger.postMessage(SeverityLevel.Debug, "managed", String.Format("Data path: {0}", Paths.DataDirectory));
-            
-
             while (!RenderContext.shouldClose())
             {
                 RenderContext.pumpEvents();
+                
+                CurrentScene.update(updateTimer());
+                
                 RenderContext.beginFrame();
+                Screen.clear();
+                CurrentScene.render();
                 Renderer.render();
                 RenderContext.endFrame();
             }
+        }
+
+        private long updateTimer()
+        {
+            // It's the first frame. Initialize lastFrame to current time
+            // and do one simulation tick.
+            if (isFirstFrame)
+            {
+                lastFrame = DateTime.Now;
+                isFirstFrame = false;
+                return 1;
+            }
+            else
+            {
+                var thisFrame = DateTime.Now;
+                var elapsedTime = (long) (thisFrame - lastFrame).TotalMilliseconds + leftoverTime;
+
+                lastFrame = thisFrame;
+                
+                leftoverTime = elapsedTime % millisPerTick;
+
+                // Make sure that at least one tick is generated
+                return Math.Max(elapsedTime / millisPerTick, 1L);
+            }
+        }
+        
+        static void Main(string[] args)
+        {
+            var p = new Program(new TestScene());
+            p.run(args);
         }
     }
 }

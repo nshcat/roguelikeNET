@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace game.Ascii
 {
@@ -29,7 +30,19 @@ namespace game.Ascii
         /// Returns a new vector that is the normalized form of this instance
         /// </summary>
         public Vector Normalized => this / Length;
-
+        
+        /// <summary>
+        /// Returns a new vector that is perpendicular to this vector. Uses the vector
+        /// that appears first in clockwise direction.
+        /// </summary>
+        public Vector PerpendicularClockwise => new Vector(Y, -X);
+        
+        /// <summary>
+        /// Returns a new vector that is perpendicular to this vector. Uses the vector
+        /// that appears first in counter-clockwise direction.
+        /// </summary>
+        public Vector PerpendicularCounterClockwise => new Vector(-Y, X);
+        
         
         public Vector(double x, double y)
         {
@@ -76,10 +89,10 @@ namespace game.Ascii
         /// Convert vector to polar coordinates
         /// </summary>
         /// <returns></returns>
-        public Polar toPolar()
+        public Polar ToPolar()
         {
             var radius = Math.Sqrt(X*X + Y*Y);
-            var angle = Math.Atan2(Y, X);
+            var angle = Math.Atan2(Y, X) + Math.PI;
             return new Polar(radius, angle);
         }
 
@@ -87,7 +100,7 @@ namespace game.Ascii
         /// Rounds the member values to the nearest whole number, using ceil().
         /// </summary>
         /// <returns></returns>
-        public Vector ceil()
+        public Vector Ceil()
         {
             return new Vector(Math.Ceiling(X), Math.Ceiling(Y));
         }
@@ -96,9 +109,19 @@ namespace game.Ascii
         /// Rounds the member values to the nearest whole number, using floor().
         /// </summary>
         /// <returns></returns>
-        public Vector floor()
+        public Vector Floor()
         {
             return new Vector(Math.Floor(X), Math.Floor(Y));
+        }
+
+        /// <summary>
+        /// Rounds the member values using round() with given midpoint rounding strategy.
+        /// </summary>
+        /// <param name="r">Midpoint rounding strategy that will be used</param>
+        /// <returns></returns>
+        public Vector Round(MidpointRounding r = MidpointRounding.AwayFromZero)
+        {
+            return new Vector(Math.Round(X, r), Math.Round(Y, r));
         }
 
         /// <summary>
@@ -108,7 +131,7 @@ namespace game.Ascii
         /// This will throw if any of the components are negative.
         /// </summary>
         /// <returns></returns>
-        public Position toPosition()
+        public Position ToPosition()
         {
             if (X < 0 || Y < 0)
                 throw new ArgumentOutOfRangeException("Can't convert vector with negative components to point");
@@ -135,7 +158,17 @@ namespace game.Ascii
         /// <returns></returns>
         public static Vector FromPolar(Polar p)
         {
-            return p.toVector();
+            return p.ToVector();
+        }
+        
+        /// <summary>
+        /// Convert given position to a vector
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public static Vector FromPosition(Position p)
+        {
+            return p.ToVector();
         }
         #endregion
         
@@ -156,10 +189,27 @@ namespace game.Ascii
             return new Vector(lhs.X * f, lhs.Y * f);
         }
         
+        public static Vector operator *(double f, Vector rhs)
+        {
+            return new Vector(rhs.X * f, rhs.Y * f);
+        }
+        
         public static Vector operator /(Vector lhs, double f)
         {
             return new Vector(lhs.X / f, lhs.Y / f);
         }
         #endregion
+        
+        #region Operations
+        /// <summary>
+        /// Calculates the dot product between two vectors
+        /// </summary>
+        /// <param name="other">Second vector to use in the calculation, the first one being the current instance</param>
+        /// <returns>The dot product of the two vectors</returns>
+        public double Dot(Vector other)
+        {
+            return (X * other.X) + (Y * other.Y);
+        }
+        #endregion Operations
     }
 }

@@ -61,7 +61,7 @@ namespace game.Ascii
         /// Convert instance to cartesian vector
         /// </summary>
         /// <returns></returns>
-        public Vector toVector()
+        public Vector ToVector()
         {
             var x = Radius * Math.Cos(Angle);
             var y = Radius * Math.Sin(Angle);
@@ -76,7 +76,7 @@ namespace game.Ascii
         /// <returns></returns>
         public static Polar FromVector(Vector v)
         {
-            return v.toPolar();
+            return v.ToPolar();
         }
         
         /// <summary>

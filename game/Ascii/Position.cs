@@ -63,6 +63,16 @@ namespace game.Ascii
                 return ((int) x * 397) ^ (int) y;
             }
         }
+
+        public Vector ToVector()
+        {
+            return new Vector(X, Y);
+        }
+
+        public static Position FromVector(Vector v)
+        {
+            return v.ToPosition();
+        }
         
         public static Position Origin = new Position(0, 0);
     }

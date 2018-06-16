@@ -11,7 +11,7 @@ namespace game.Ascii.Native
         /// which leads to corruption. This method will ensure to always call the correct one.
         /// </summary>
         /// <param name="p">Pointer to memory block that needs to be freed</param>
-        [DllImport("libascii.so")]
+        [DllImport("libascii")]
         public static extern void free_memory(IntPtr p);  
     }
 }

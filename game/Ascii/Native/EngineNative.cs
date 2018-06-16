@@ -10,7 +10,7 @@ namespace game.Ascii.Native
         /// </summary>
         /// <param name="argc">Number of command line arguments</param>
         /// <param name="argv">Command line arguments</param>
-        [DllImport("libascii.so")]
+        [DllImport("libascii")]
         public static extern void engine_initialize(Int64 argc, string[] argv);
     }
 }
