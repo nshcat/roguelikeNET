@@ -1,6 +1,8 @@
 ﻿using System;
 using game.Ascii;
 
+using SadRex;
+
 namespace game
 {
     class Program
@@ -13,16 +15,14 @@ namespace game
         public Scene CurrentScene
         {
             get;
-        }
-
-        public Program(Scene s)
-        {
-            CurrentScene = s;
+            set;
         }
 
         public void run(string[] args)
         {
             Engine.initialize(args);
+            
+            CurrentScene = new TestScene();
             
             while (!RenderContext.shouldClose())
             {
@@ -63,8 +63,8 @@ namespace game
         }
         
         static void Main(string[] args)
-        {
-            var p = new Program(new TestScene());
+        {      
+            var p = new Program();
             p.run(args);
         }
     }

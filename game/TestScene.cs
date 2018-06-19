@@ -11,6 +11,7 @@ namespace game
     {
         private Position p0, p1, p2, p3;
         private Color clr = Color.Black;
+        private TileImage img;
 
         public TestScene()
         {
@@ -23,6 +24,8 @@ namespace game
             p1 = new Position(6, 6);
             p2 = new Position(16, 6);
             p3 = new Position(26, 6);
+
+            img = TileImageLoader.LoadImage("test");
         }
         
         public void update(long elapsedTicks)
@@ -65,6 +68,8 @@ namespace game
           
                 Screen.setTile(p.ToPosition(), t);
             }
+            
+            img.DrawTransparent(new Position(4, 4), new Tile(Color.Black, Color.Black, 0));
         }
 
         
