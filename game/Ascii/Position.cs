@@ -74,6 +74,11 @@ namespace game.Ascii
             return v.ToPosition();
         }
         
+        public static Position operator +(Position lhs, Position rhs)
+        {
+            return new Position(lhs.X + rhs.X, lhs.Y + rhs.Y);
+        }
+        
         public static Position Origin = new Position(0, 0);
     }
 }
