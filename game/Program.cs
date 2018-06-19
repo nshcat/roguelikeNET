@@ -26,9 +26,9 @@ namespace game
             
             while (!RenderContext.shouldClose())
             {
-                RenderContext.pumpEvents();
-                
+                Input.begin();            
                 CurrentScene.update(updateTimer());
+                Input.end();
                 
                 RenderContext.beginFrame();
                 Screen.clear();

@@ -10,21 +10,39 @@ namespace game
     public class TestScene : Scene
     {
         private Position p0, p1, p2, p3;
+        private Color clr = Color.Black;
 
         public TestScene()
         {
-            p0 = new Position(6, 25);
+            /*p0 = new Position(6, 25);
             p1 = new Position(15, 13);
             p2 = new Position(25, 26);
-            p3 = new Position(35, 13);
+            p3 = new Position(35, 13);*/
+            
+            p0 = new Position(6, 25);
+            p1 = new Position(6, 6);
+            p2 = new Position(16, 6);
+            p3 = new Position(26, 6);
         }
         
         public void update(long elapsedTicks)
         {
+            if(Input.hasKey(Key.K))
+                clr = Color.Green;
+            else clr = Color.Black;
         }
 
         public void render()
         {
+            for (uint iy = 0; iy < Screen.getDimensions().Y; ++iy)
+            {
+                for (uint ix = 0; ix < Screen.getDimensions().X; ++ix)
+                {
+                    Screen.setTile(new Position(ix, iy), new Tile(clr, Color.Black, 0));
+                }
+            }
+            
+            
             Tile t = new Tile(Color.White, Color.Black, 0);
             
             for (double d = 0.0; d <= 1.0; d += 0.005)
@@ -39,7 +57,7 @@ namespace game
                 var pl = dif.PerpendicularClockwise.Normalized;
                 var pr = dif.PerpendicularCounterClockwise.Normalized;
 
-                for (double d2 = 0.0; d2 <= 1.5; d2 += 0.1)
+                for (double d2 = 0.0; d2 < 1.0; d2 += 0.1)
                 {
                     Screen.setTile((p + d2*pl).ToPosition(), t);
                     Screen.setTile((p + d2*pr).ToPosition(), t);

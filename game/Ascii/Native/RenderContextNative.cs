@@ -13,8 +13,5 @@ namespace game.Ascii.Native
 	    
 	    [DllImport("libascii")]
 	    public static extern bool render_context_end_frame();
-	    
-	    [DllImport("libascii")]
-	    public static extern bool render_context_pump_events();
     }
 }

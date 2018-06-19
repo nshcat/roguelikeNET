@@ -16,10 +16,5 @@
         {
             Native.RenderContextNative.render_context_end_frame();
         }
-
-        public static void pumpEvents()
-        {
-            Native.RenderContextNative.render_context_pump_events();
-        }
     }
 }
