@@ -25,10 +25,19 @@ namespace game.Ascii
             {
                 // Build path to resource
                 var path = Path.Combine(Paths.DataDirectory, "images", Path.ChangeExtension(name, ".xp"));
-                
-                // Open file stream. We only need read access.
-                var file = File.Open(path, FileMode.Open, FileAccess.Read);
-                
+
+                FileStream file;
+                try
+                {
+                    // Open file stream. We only need read access.
+                    file = File.Open(path, FileMode.Open, FileAccess.Read);
+                }
+                catch (Exception e)
+                {
+                    Logger.postMessage(SeverityLevel.Fatal, "TileImageLoader", String.Format("Could not load asset file \"{0}\": {1}", name, e.Message));
+                    throw;
+                }
+
                 // Parse RexPaint image using SadRex.
                 var rawImage = Image.Load(file);
                 
