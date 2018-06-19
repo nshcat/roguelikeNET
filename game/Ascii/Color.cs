@@ -9,7 +9,7 @@ namespace game.Ascii
     /// The range for each component is [0, 255].
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct Color
+    public struct Color : ICloneable
     {
         private UInt32 r;    
         private UInt32 g;
@@ -88,7 +88,12 @@ namespace game.Ascii
             if (!(R >= 0 && R <= 255) && (G >= 0 && G <= 255) && (B >= 0 && B <= 255))
                 throw new ArgumentOutOfRangeException("Color component value out of range");
         }
-        
+
+        public object Clone()
+        {
+            return new Color(R, G, B);
+        }
+
         public static Color Black = new Color();
         public static Color White = new Color(255, 255, 255);
         public static Color Red = new Color(255, 0, 0);
