@@ -21,6 +21,8 @@ namespace game
         public void run(string[] args)
         {
             Engine.initialize(args);
+
+            Renderer.IsBatchMode = false;
             
             CurrentScene = new TestScene();
             
