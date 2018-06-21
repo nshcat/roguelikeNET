@@ -1,12 +1,17 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using game.Ascii.Native;
 
 namespace game.Ascii
 {
     public static class Screen
-    {     
+    {
+        public static Dimensions Dimensions => getDimensions();
+        public static uint Width => Dimensions.X;
+        public static uint Height => Dimensions.Y;
+        
         public static void clear()
         {
             Native.ScreenNative.screen_clear();
@@ -49,7 +54,7 @@ namespace game.Ascii
                 Native.ScreenNative.screen_set_depth(ref p, d);
         }
 
-        public static Dimensions getDimensions()
+        private static Dimensions getDimensions()
         {
             var d = new Dimensions();
             

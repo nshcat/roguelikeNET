@@ -1,0 +1,49 @@
+[
+	{
+		"path" : "graphics.tileset",
+		"name" : "Tileset",
+		"type" : "string",
+		"description" : "Sets the graphics tileset that the renderer will use.",
+		"default" : "default",
+		"mapping" : {
+			"long_name" : "tileset",
+			"short_name" : "T",
+			"category" : "Game settings"
+		}
+	},
+	{
+		"path" : "graphics.palette",
+		"name" : "Color palette",
+		"type" : "string",
+		"description" : "Sets the color palette that the renderer will use",
+		"default" : "c64"
+	},
+	{
+		"path" : "graphics.height",
+		"name" : "Window height",
+		"type" : "int",
+		"description" : "Sets the window height",
+		"default" : 30,
+		"min" : 30,
+		"max" : 200,
+		"mapping" : {
+			"long_name" : "height",
+			"short_name" : "H",
+			"category" : "Game settings"
+		}
+	},
+	{
+		"path" : "graphics.width",
+		"name" : "Window width",
+		"type" : "int",
+		"description" : "Sets the window width",
+		"default" : 60,
+		"min" : 60,
+		"max" : 200,
+		"mapping" : {
+			"long_name" : "width",
+			"short_name" : "W",
+			"category" : "Game settings"
+		}
+	}
+]

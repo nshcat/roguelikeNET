@@ -60,13 +60,13 @@ namespace game.Ascii
             for (uint iy = 0; iy < Height; ++iy)
             {
                 // Cancel if vertical position is out of bounds
-                if ((iy + p.Y) >= Screen.getDimensions().Y)
+                if ((iy + p.Y) >= Screen.Height)
                     break;
 
                 for (uint ix = 0; ix < Width; ++ix)
                 {
                     // Cancel if horizontal position is out of bounds
-                    if ((ix + p.X) >= Screen.getDimensions().X)
+                    if ((ix + p.X) >= Screen.Width)
                         break;
 
                     // Retrieve tile

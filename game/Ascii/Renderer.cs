@@ -5,7 +5,8 @@ namespace game.Ascii
 {
     public static class Renderer
     {
-        private static List<RenderCommand> commandQueue = new List<RenderCommand>();
+        private static readonly int queueSize = 2500;
+        private static List<RenderCommand> commandQueue = new List<RenderCommand>(queueSize);
 
         private static bool isBatchMode;
         
@@ -31,6 +32,7 @@ namespace game.Ascii
 
                 // Clear the command queue for following frame
                 commandQueue.Clear();
+                commandQueue.Capacity = queueSize;
             }
 
             // Perform render in usual way

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using game.Ascii;
 
 using SadRex;
@@ -12,7 +15,7 @@ namespace game
         private readonly long millisPerTick = 50L;
         private long leftoverTime;
         
-        public Scene CurrentScene
+        public IScene CurrentScene
         {
             get;
             set;
@@ -22,16 +25,16 @@ namespace game
         {
             Engine.initialize(args);
 
-            Renderer.IsBatchMode = false;
+            Renderer.IsBatchMode = true;
             
             CurrentScene = new TestScene();
-            
+
             while (!RenderContext.shouldClose())
             {
-                Input.begin();            
+                Input.begin();
                 CurrentScene.update(updateTimer());
                 Input.end();
-                
+
                 RenderContext.beginFrame();
                 Screen.clear();
                 CurrentScene.render();

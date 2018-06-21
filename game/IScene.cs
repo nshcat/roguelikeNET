@@ -1,6 +1,6 @@
 ﻿namespace game
 {
-    public interface Scene
+    public interface IScene
     {
         /// <summary>
         /// Update scene simulation state according to given amount of passed game ticks.

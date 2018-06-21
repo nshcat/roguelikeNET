@@ -7,7 +7,7 @@ namespace game
     // Provide method "SampleIncrement" that gives the increment that will lead
     // to good result when drawing. Could add up distance between the points (p0->p1, p1-> ... -> pn-1, pn-1 -> pn)
     // and use that as heuristic
-    public class TestScene : Scene
+    public class TestScene : IScene
     {
         private Position p0, p1, p2, p3;
         private Color clr = Color.Black;
@@ -37,9 +37,9 @@ namespace game
 
         public void render()
         {
-            for (uint iy = 0; iy < Screen.getDimensions().Y; ++iy)
+            for (uint iy = 0; iy < Screen.Height; ++iy)
             {
-                for (uint ix = 0; ix < Screen.getDimensions().X; ++ix)
+                for (uint ix = 0; ix < Screen.Width; ++ix)
                 {
                     Screen.setTile(new Position(ix, iy), new Tile(clr, Color.Black, 0));
                 }
