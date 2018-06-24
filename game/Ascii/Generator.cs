@@ -16,7 +16,6 @@ namespace game.Ascii
         protected Action<GeneratorProgress> Callback
         {
             get;
-            set;
         }
 
         /// <summary>
@@ -45,10 +44,10 @@ namespace game.Ascii
         /// <summary>
         /// Run this task in the background.
         /// </summary>
-        public /*async*/ void Run()
+        public void Run()
         {
-            /*await*/ System.Threading.Tasks.Task.Run(
-                async () => Task()
+            System.Threading.Tasks.Task.Run(
+                () => Task()
             );
         }
     }
