@@ -18,10 +18,22 @@ namespace game.Ascii
             get;
         }
 
+        /// <summary>
+        /// Signal whether the task associated with this instance is currently running
+        /// </summary>
         public bool IsRunning
         {
             get;
             protected set;
+        }
+
+        /// <summary>
+        /// Property that signals if the task should stop execution prematurely
+        /// </summary>
+        protected bool ShouldStop
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -60,10 +72,24 @@ namespace game.Ascii
                 () =>
                 {
                     IsRunning = true;
+                    ShouldStop = false;
                     Task();
                     IsRunning = false;
                 }
             );
+        }
+
+        
+        /// <summary>
+        /// Tries to stop the task. This is not guarantueed though, since the execute task itself
+        /// is responsible for checking the ShouldStop property in a regular fashion.
+        /// </summary>
+        public void Stop()
+        {
+            if (!IsRunning)
+                throw new InvalidOperationException("Task is not running");
+
+            ShouldStop = true;
         }
     }
 }
