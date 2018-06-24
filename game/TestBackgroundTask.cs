@@ -25,7 +25,7 @@ namespace game
                 "Generating biomes",
                 "Placing lakes",
                 "Generating rivers",
-                "Generating natual resources",
+                "Generating natural resources",
                 "Generating fauna information",
                 "Generating flora information",                    
                 "Generating initial settlements",
@@ -37,10 +37,10 @@ namespace game
             for (int i = 0; i < phases.Length; ++i)
             {
                 Callback(new TaskProgress(phases[i], i, phases.Length, false));
-                Thread.Sleep(rnd.Next(500, 1500));
+                Thread.Sleep(rnd.Next(100, 2000));
             }
             
-            Callback(new TaskProgress("Done", phases.Length, phases.Length, false));
+            Callback(new TaskProgress("Saving map", phases.Length, phases.Length, false));
             Thread.Sleep(rnd.Next(200, 1200));
             Callback(new TaskProgress("Done", phases.Length, phases.Length, true));
         }

@@ -13,7 +13,8 @@ namespace game
         private Color clr = Color.Black;
         private TileImage img;
 
-        private TaskProgress prog;
+        private bool hasSpawned;
+        private TaskProgress prog = new TaskProgress("Starting generator", 0, 1, false);
 
         public TestScene()
         {
@@ -29,19 +30,25 @@ namespace game
 
             img = TileImageLoader.LoadImage("test");
 
-            new TestBackgroundTask(p => this.prog = p).Run();
+            
         }
         
         public void update(long elapsedTicks)
         {
-            if(Input.hasKey(Key.K))
+            if (Input.hasKey(Key.Enter) && !hasSpawned)
+            {
+                new TestBackgroundTask(p => this.prog = p).Run();
+                hasSpawned = true;
+            }
+
+            /*if(Input.hasKey(Key.K))
                 clr = Color.Green;
-            else clr = Color.Black;
+            else clr = Color.Black;*/
         }
 
         public void render()
         {
-            for (uint iy = 0; iy < Screen.Height; ++iy)
+            /*for (uint iy = 0; iy < Screen.Height; ++iy)
             {
                 for (uint ix = 0; ix < Screen.Width; ++ix)
                 {
@@ -73,24 +80,41 @@ namespace game
                 Screen.setTile(p.ToPosition(), t);
             }
             
-            img.DrawTransparent(new Position(4, 4), new Tile(Color.Black, Color.Black, 0));
+            img.DrawTransparent(new Position(4, 4), new Tile(Color.Black, Color.Black, 0));*/
 
 
-            if (!prog.IsDone)
+            if (hasSpawned && !prog.IsDone)
             {
-                for (int i = 0; i < prog.Message.Length; ++i)
+                var bg = new Color(43, 43, 43);
+                var fg = new Color(205, 205, 205);
+                
+                double percent = ((double) prog.CurrentPhase) / (double) prog.TotalPhases;
+                
+                Screen.drawWindow(new Position(0U, 0U), new Dimensions(44u, 10U), "Generating map", fg, bg, true);
+                
+                Screen.drawString(new Position(2U, 2U), "> " + prog.Message + "..", fg, bg);
+                
+                Screen.drawProgressBar(new Position(2U, 4U), 33, percent, fg, bg);
+                
+                Screen.drawString(new Position(2U + 33U + 2U + 1U, 4U), (((int)(percent * 100)) + "%").PadLeft(4), fg, bg);
+                
+                Screen.drawString(new Position(33U, 7U), "c", Color.Green, bg);
+                Screen.drawString(new Position(33U + 1U, 7U), ": cancel", fg, bg);
+                /*for (int i = 0; i < prog.Message.Length; ++i)
                 {
                     Screen.setTile(new Position((uint) (0 + i), 0),
                         new Tile(Color.Black, Color.White, (byte) prog.Message[i]));
                 }
+                
+                Screen.drawProgressBar(new Position(0U, 1U), 20, ((double) prog.CurrentPhase) / (double) prog.TotalPhases, Color.White, Color.Black);*/
 
-                int barCount = (int)((((double) prog.CurrentPhase) / (double) prog.TotalPhases) * 20.0);
+                /*int barCount = (int)((((double) prog.CurrentPhase) / (double) prog.TotalPhases) * 20.0);
                 
                 Screen.setTile(new Position(0U, 1U), new Tile(Color.Black, Color.White, (byte)'['));
                 Screen.setTile(new Position(21U, 1U), new Tile(Color.Black, Color.White, (byte)']'));
                 
                 for(int i = 0; i < barCount; ++i)
-                    Screen.setTile(new Position(1U + (uint)i, 1U), new Tile(Color.Black, Color.White, (byte)'='));
+                    Screen.setTile(new Position(1U + (uint)i, 1U), new Tile(Color.Black, Color.White, (byte)'='));*/
             }
         }
 

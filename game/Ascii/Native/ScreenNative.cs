@@ -20,6 +20,6 @@ namespace game.Ascii.Native
         public static extern void screen_set_depth(ref Position p, byte d);
 
         [DllImport("libascii")]
-        public static extern void screen_apply_commands(RenderCommand[] p_cmdbuf, int p_count);
+        public static extern void screen_apply_commands(RenderCommand[] cmdbuf, int count);
     }
 }
