@@ -16,7 +16,7 @@ namespace game.Ascii
             Array.Copy(args, 0, argv, 1, args.Length);
             argv[0] = "roguelikeNET";
             
-            Native.EngineNative.engine_initialize(argv.Length, argv);
+            Native.EngineNative.engine_initialize(argv.Length, argv);        
         }
     }
 }

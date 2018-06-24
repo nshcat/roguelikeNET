@@ -11,18 +11,24 @@ namespace game.Ascii
     /// the game displaying the periodically updated progress information as a progress
     /// bar / indicator.
     /// </summary>
-    public abstract class Generator
+    public abstract class BackgroundTask
     {
-        protected Action<GeneratorProgress> Callback
+        protected Action<TaskProgress> Callback
         {
             get;
+        }
+
+        public bool IsRunning
+        {
+            get;
+            protected set;
         }
 
         /// <summary>
         /// Constructor that registers given callback as progress status callback
         /// </summary>
         /// <param name="callback">Callback to use for progress indication</param>
-        protected Generator(Action<GeneratorProgress> callback)
+        protected BackgroundTask(Action<TaskProgress> callback)
         {
             Callback = callback;
         }
@@ -30,7 +36,7 @@ namespace game.Ascii
         /// <summary>
         /// Constructor that registers an empty callback as progress status callback
         /// </summary>
-        protected Generator()
+        protected BackgroundTask()
             : this(_ => { })
         {
             
@@ -46,8 +52,17 @@ namespace game.Ascii
         /// </summary>
         public void Run()
         {
+            // Do not allow multiple concurrent runs
+            if (IsRunning)
+                throw new InvalidOperationException("Detected concurrent runs of same BackgroundTask instance");
+            
             System.Threading.Tasks.Task.Run(
-                () => Task()
+                () =>
+                {
+                    IsRunning = true;
+                    Task();
+                    IsRunning = false;
+                }
             );
         }
     }

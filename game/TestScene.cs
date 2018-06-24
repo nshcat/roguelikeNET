@@ -13,7 +13,7 @@ namespace game
         private Color clr = Color.Black;
         private TileImage img;
 
-        private GeneratorProgress prog;
+        private TaskProgress prog;
 
         public TestScene()
         {
@@ -29,7 +29,7 @@ namespace game
 
             img = TileImageLoader.LoadImage("test");
 
-            new TestGenerator(p => this.prog = p).Run();
+            new TestBackgroundTask(p => this.prog = p).Run();
         }
         
         public void update(long elapsedTicks)
@@ -84,10 +84,10 @@ namespace game
                         new Tile(Color.Black, Color.White, (byte) prog.Message[i]));
                 }
 
-                int barCount = (int)((((double) prog.CurrentPhase) / (double) prog.TotalPhases) * 10.0);
+                int barCount = (int)((((double) prog.CurrentPhase) / (double) prog.TotalPhases) * 20.0);
                 
                 Screen.setTile(new Position(0U, 1U), new Tile(Color.Black, Color.White, (byte)'['));
-                Screen.setTile(new Position(11U, 1U), new Tile(Color.Black, Color.White, (byte)']'));
+                Screen.setTile(new Position(21U, 1U), new Tile(Color.Black, Color.White, (byte)']'));
                 
                 for(int i = 0; i < barCount; ++i)
                     Screen.setTile(new Position(1U + (uint)i, 1U), new Tile(Color.Black, Color.White, (byte)'='));

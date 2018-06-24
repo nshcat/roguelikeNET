@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace game.Ascii
+﻿namespace game.Ascii
 {
-    public class GeneratorProgress
+    public class TaskProgress
     {
         public string Message
         {
@@ -24,7 +22,7 @@ namespace game.Ascii
             get;
         }
 
-        public GeneratorProgress(string msg, int phase, int totalPhases, bool isDone)
+        public TaskProgress(string msg, int phase, int totalPhases, bool isDone)
         {
             Message = msg;
             CurrentPhase = phase;
