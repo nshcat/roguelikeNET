@@ -62,6 +62,6 @@ namespace game.Ascii
             }
         }
         
-        public static Dimensions Origin = new Dimensions(0, 0);
+        public static Dimensions Empty = new Dimensions(0, 0);
     }
 }
