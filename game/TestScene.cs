@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using game.Ascii;
+using game.Procedual;
 
 namespace game
 {
@@ -15,6 +17,7 @@ namespace game
 
         private bool hasSpawned;
         private TaskProgress prog = new TaskProgress("Starting generator", 0, 1, false);
+        private ImageOutput outImg = new ImageOutput(Paths.UserDirectory);
 
         public TestScene()
         {
@@ -37,7 +40,8 @@ namespace game
         {
             if (Input.hasKey(Key.Enter) && !hasSpawned)
             {
-                new TestBackgroundTask(p => this.prog = p).Run();
+                new MapGenerator(p => this.prog = p, new Dimensions(2000U, 2000U), 1337, outImg).Run();
+                //new TestBackgroundTask(p => this.prog = p).Run();
                 hasSpawned = true;
             }
 
