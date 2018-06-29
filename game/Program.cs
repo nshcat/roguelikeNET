@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using game.Ascii;
-
+using Newtonsoft.Json.Linq;
 using SadRex;
 
 namespace game
@@ -68,7 +68,17 @@ namespace game
         }
         
         static void Main(string[] args)
-        {      
+        {
+            // TODO: default vlaues dont seem to work!
+            string json =
+            "{  \"meow\" : 13, \"nyan\" : \"bla\", \"bar\" : [ \"first\", \"second\", \"third\" ], \"foo\" : { \"chirp\" : 42 } }";
+
+            var o = AutoJson.JsonLoader.Deserialize<Test>(JObject.Parse(json));
+
+            Console.WriteLine("meow: {0}, nyan: {1}, foo.chirp: {2}, bar: {3}", o.Meow, o.Nyan, o.Foo.Chirp,
+                String.Join(", ", o.Bar));
+            
+            
             var p = new Program();
             p.run(args);
         }
