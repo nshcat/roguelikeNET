@@ -1,4 +1,6 @@
 game/bin
 game/.idea
 game/obj
-
+.idea
+bin
+obj
