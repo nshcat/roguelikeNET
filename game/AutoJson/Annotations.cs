@@ -3,13 +3,13 @@
 namespace game.AutoJson
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    class Deserializable : Attribute
+    public class Deserializable : Attribute
     {
         
     }
     
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    class Key : Attribute
+    public class Key : Attribute
     {
         public string Value
         {
@@ -23,13 +23,13 @@ namespace game.AutoJson
     }
     
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    class Required : Attribute
+    public class Required : Attribute
     {
     }
     
     
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    class DefaultValue : Attribute
+    public class DefaultValue : Attribute
     {
         public object Value
         {

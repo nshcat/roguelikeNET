@@ -50,7 +50,7 @@ namespace game.AutoJson
                         else
                         {
                             // Default initialize
-                            prop.SetValue(result, Activator.CreateInstance(prop.PropertyType));                            
+                            prop.SetValue(result, DefaultConstruct(prop.PropertyType));                            
                         }
                     }
                     else
@@ -71,8 +71,15 @@ namespace game.AutoJson
         {
             throw new NotImplementedException();
         }
-        
-        
+
+
+        private static object DefaultConstruct(Type t)
+        {
+            // Strings do not have an empty constructor
+            if (t == typeof(string))
+                return string.Empty;
+            else return Activator.CreateInstance(t);
+        }
         
         private static object ReadValue(PropertyInfo p, JToken t)
         {
