@@ -6,5 +6,10 @@
 	    {
 		    return (val - minA) * (maxB - minB) / (maxA - minA) + minB;
 	    }
+	    
+	    public static float LMap(float val, float minA, float maxA, float minB, float maxB)
+	    {
+		    return (val - minA) * (maxB - minB) / (maxA - minA) + minB;
+	    }
     }
 }

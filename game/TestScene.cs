@@ -40,7 +40,7 @@ namespace game
         {
             if (Input.hasKey(Key.Enter) && !hasSpawned)
             {
-                new MapGenerator(p => this.prog = p, new Dimensions(2000U, 2000U), 1337, outImg).Run();
+                new MapGenerator(p => this.prog = p, new Dimensions(1500U, 1500U), new Random().Next(), outImg).Run();
                 //new TestBackgroundTask(p => this.prog = p).Run();
                 hasSpawned = true;
             }

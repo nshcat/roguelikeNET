@@ -1,4 +1,6 @@
-﻿namespace game.Procedual
+﻿using System;
+
+namespace game.Procedual
 {
     public class ElevationPhase : IMapGeneratorPhase
     {
@@ -12,7 +14,11 @@
             // Create special random number generator that will be used
             // in noise calculations
             var rng = new NoiseRandom(state.Seed);
-
+            
+            // Random offset
+            float randomOffset1 = new Random(state.Seed).Next(0, 50);
+            float randomOffset2 = new Random(state.Seed).Next(0, 50);
+            
             // Setup extrema to inital values
             state.Maximum = float.MinValue;
             state.Minimum = float.MaxValue;
@@ -35,7 +41,7 @@
                     for (int i = 0; i < 2; ++i)
                     {
                         // Create variation between different octaves
-                        float offset = (float) i * 7.0f;
+                        float offset = (float) i * 7.0f + randomOffset1;
 
                         totalCell += cell.ValueAt((float) ix * frequency + offset, (float) iy * frequency + offset) *
                                      amplitude;
@@ -50,7 +56,9 @@
 
                     for (int i = 2; i < octaves; ++i)
                     {
-                        float offset = (float) i * 7.0f;
+                        float offset = (float) i * 7.0f + randomOffset2
+                            
+                            ;
 
                         totalSimp += simplex.ValueAt((float) ix * frequency + offset, (float) iy * frequency + offset) *
                                      amplitude;

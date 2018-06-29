@@ -20,7 +20,7 @@ namespace game.Procedual
           
             // Insert phases
             phases.Add(new ElevationPhase());
-            phases.Add(new ThermalErosionPhase(20));
+            phases.Add(new ThermalErosionPhase(8/*20*//*4*/));
         }
         
         protected override void Task()
