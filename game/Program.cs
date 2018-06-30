@@ -23,7 +23,7 @@ namespace game
 
         public void run(string[] args)
         {
-            Engine.initialize(args);
+            Engine.initialize(new GameInfo("test", "0.0.1", "libascii test"), args);
 
             Renderer.IsBatchMode = true;
             

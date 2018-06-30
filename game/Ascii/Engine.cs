@@ -7,8 +7,9 @@ namespace game.Ascii
         /// <summary>
         /// Initialize the engine global state and all sub systems.
         /// </summary>
+        /// <param name="info">Information about the game</param>
         /// <param name="args">Command line arguments</param>
-        public static void initialize(string[] args)
+        public static void initialize(GameInfo info, string[] args)
         {
             // The native library expects the program name to be the first entry in argv,
             // like its convention in C.
@@ -16,7 +17,7 @@ namespace game.Ascii
             Array.Copy(args, 0, argv, 1, args.Length);
             argv[0] = "roguelikeNET";
             
-            Native.EngineNative.engine_initialize(argv.Length, argv);        
+            Native.EngineNative.engine_initialize(ref info, argv.Length, argv);        
         }
     }
 }
