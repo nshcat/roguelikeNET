@@ -11,9 +11,11 @@ namespace game
     // and use that as heuristic
     public class TestScene : IScene
     {
+        private int x = 15;
         private Position p0, p1, p2, p3;
         private Color clr = Color.Black;
         private TileImage img;
+        private Gui.Gui g = new Gui.Gui();
 
         private bool hasSpawned;
         private TaskProgress prog = new TaskProgress("Starting generator", 0, 1, false);
@@ -38,20 +40,46 @@ namespace game
         
         public void update(long elapsedTicks)
         {
-            if (Input.hasKey(Key.Enter) && !hasSpawned)
+            /*if (Input.hasKey(Key.Enter) && !hasSpawned)
             {
                 new MapGenerator(p => this.prog = p, new Dimensions(1500U, 1500U), new Random().Next(), outImg).Run();
                 //new TestBackgroundTask(p => this.prog = p).Run();
                 hasSpawned = true;
-            }
+            }*/
 
             /*if(Input.hasKey(Key.K))
                 clr = Color.Green;
             else clr = Color.Black;*/
+
+            
+            
+            g.Begin();
+            g.Window("test", Position.Origin, new Dimensions(20, 25));
+            
+            g.Label("meow");
+            g.IntegerBox("bla", 6, 3, ref x);
+            g.Nest();
+            g.Label("nyan");
+            g.Button("test1");
+            g.Unnest();
+            g.Button("test2");
+            g.Label("blab");
+            g.Button("test3");
+            g.Nest();
+            g.Button("test4");
+            g.Label("blabbb");
+            g.Button("test5");
+            g.Label("blabb");
+            g.Unnest();
+            g.Button("test6");
+            g.Button("test7");
+            g.End();
         }
 
         public void render()
         {
+            g.Render();
+            
             /*for (uint iy = 0; iy < Screen.Height; ++iy)
             {
                 for (uint ix = 0; ix < Screen.Width; ++ix)

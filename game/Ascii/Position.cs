@@ -22,6 +22,18 @@ namespace game.Ascii
             this.x = x;
             this.y = y;
         }
+        
+        public Position(int x, int y)
+        {
+            this.x = (uint)x;
+            this.y = (uint)y;
+        }
+        
+        public Position(long x, long y)
+        {
+            this.x = (uint)x;
+            this.y = (uint)y;
+        }
 
         public uint X
         {
