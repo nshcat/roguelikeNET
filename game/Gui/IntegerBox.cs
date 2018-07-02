@@ -32,7 +32,7 @@ namespace game.Gui
             this.front = front;
         }
 
-        public override void Render(Container c)
+        public override void Render(Container c, GuiStyle s)
         {
             Color fg, bg;
 

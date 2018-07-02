@@ -13,6 +13,6 @@ namespace game.Gui
             this.position = position;
         }
 
-        public abstract void Render(Container c);
+        public abstract void Render(Container c, GuiStyle s);
     }
 }

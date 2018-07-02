@@ -6,33 +6,37 @@ namespace game.Gui
     internal class Button : SelectableControl
     {
         protected string text;
-        protected int width;
-        protected Color front;
+        protected ButtonStyle style;
         
-        public Button(Position position, string text, int width, Color front, bool isSelected)
+        
+        public Button(Position position, string text, ButtonStyle style, bool isSelected)
             : base(position, isSelected)
         {
             this.text = text;
-            this.width = width;
-            this.front = front;
+            this.style = style;
         }
 
-        public override void Render(Container c)
+        public override void Render(Container c, GuiStyle s)
         {
-            Color fg, bg;
+            // Retrieve colors to use for renderering
+            Color fg = style.OverrideForegroundColor ? style.Foreground : s.Foreground;
+            Color bg = style.OverrideBackgroundColor ? style.Background : s.Background;
 
-            if (IsSelected)
+            // Invert colors on selection if requested
+            if (IsSelected && style.InvertOnSelection)
             {
-                fg = c.Back;
-                bg = front;
+                fg.Swap(ref bg);
             }
-            else
-            {
-                fg = front;
-                bg = c.Back;
-            }
-            
-            Screen.drawString(position, text.PadBoth(width), fg, bg);
+
+            // Determine width
+            var width = style.Width == ButtonStyle.AutoWidth ? text.Length : style.Width;
+
+            // Create button string from appropiate template
+            var template = IsSelected ? style.SelectedTemplate : style.NonSelectedTemplate;
+            var buttonText = String.Format(template, text.Substring(0, Math.Min(width, text.Length)));
+
+            // Center text and draw to screen
+            Screen.drawString(position, buttonText.PadBoth(width), fg, bg); 
         }
     }
 }

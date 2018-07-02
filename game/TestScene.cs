@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using game.Ascii;
+using game.Gui;
 using game.Procedual;
 
 namespace game
@@ -35,7 +36,18 @@ namespace game
 
             img = TileImageLoader.LoadImage("test");
 
+            var y = new CtorTest
+            {
+                A = 0,
+                B = 0
+            };
             
+            var x = new CtorTest(y)
+            {
+                B = 3
+            };
+            
+            Console.WriteLine($"x.B: {x.B}, x.A: {x.A}");
         }
         
         public void update(long elapsedTicks)
@@ -50,10 +62,18 @@ namespace game
             /*if(Input.hasKey(Key.K))
                 clr = Color.Green;
             else clr = Color.Black;*/
-
-            
             
             g.Begin();
+
+            g.Style = new GuiStyle(g.Style)
+            {
+                ButtonStyle = new ButtonStyle()
+                {
+                    InvertOnSelection = false,
+                    SelectedTemplate = "> {0}",
+                    NonSelectedTemplate = "  {0}"
+                }
+            };
             g.Window("test", Position.Origin, new Dimensions(20, 25));
             
             g.Label("meow");

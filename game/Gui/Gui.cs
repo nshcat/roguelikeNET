@@ -102,55 +102,30 @@ namespace game.Gui
         }
 
         /// <summary>
-        /// Insert button with explicit width and text color.
+        /// Insert button with explicit button style
         /// </summary>
         /// <param name="text">Text to display as button label</param>
-        /// <param name="width">Explicit width of the button</param>
-        /// <param name="front">Text color</param>
+        /// <param name="style">Style object describing how the button should be rendered</param>
         /// <returns>Flag indicating if the button was pressed by the user this frame</returns>
-        public bool Button(string text, int width, Color front)
+        public bool Button(string text, ButtonStyle style)
         {
             // This is not off-by-one, since we did not increment the count yet
             bool isSelected = currentSelection == selectableCount;
             
-            AddSelectableControl(new Button(CalculatePosition(), text, width, front, isSelected));
+            AddSelectableControl(new Button(CalculatePosition(), text, style, isSelected));
             UpdateVerticalPosition();
 
             return isSelected && Input.hasKey(Key.Enter);
         }
-
-        /// <summary>
-        /// Insert button with explicit width, using the current style for colorization
-        /// </summary>
-        /// <param name="text">Text to display as button label</param>
-        /// <param name="width">Explicit width of the button</param>
-        /// <returns>Flag indicating if the button was pressed by the user this frame</returns>
-        public bool Button(string text, int width)
-        {
-            return Button(text, width, Style.Foreground);
-        }
-
-        /// <summary>
-        /// Insert button with explicit text color. The button will
-        /// automatically be sized to fit the label perfectly.
-        /// </summary>
-        /// <param name="text">Text to display as button label</param>
-        /// <param name="front">Text color</param>
-        /// <returns>Flag indicating if the button was pressed by the user this frame</returns>
-        public bool Button(string text, Color front)
-        {
-            return Button(text, text.Length, front);
-        }
         
         /// <summary>
-        /// Insert button with given text, using current style for coloring. The button will
-        /// automatically be sized to fit the label perfectly.
+        /// Insert button with given text, using button style stored in current gui style 
         /// </summary>
         /// <param name="text">Text to display as button label</param>
         /// <returns>Flag indicating if the button was pressed by the user this frame</returns>
         public bool Button(string text)
         {
-            return Button(text, text.Length, Style.Foreground);
+            return Button(text, Style.ButtonStyle);
         }    
         
         /// <summary>
@@ -320,7 +295,7 @@ namespace game.Gui
             // Draw all registered render elements in order
             foreach (var e in renderQueue)
             {
-                e.Render(container);
+                e.Render(container, Style);
             }
             
             // Clear everything
