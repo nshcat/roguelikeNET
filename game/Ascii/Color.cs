@@ -94,6 +94,20 @@ namespace game.Ascii
             return new Color(R, G, B);
         }
 
+        public void Swap(ref Color other)
+        {
+            Swap(ref r, ref other.r);
+            Swap(ref g, ref other.g);
+            Swap(ref b, ref other.b);
+        }
+
+        private void Swap(ref UInt32 lhs, ref UInt32 rhs)
+        {
+            var tmp = lhs;
+            lhs = rhs;
+            rhs = tmp;
+        }
+
         public static Color Black = new Color();
         public static Color White = new Color(255, 255, 255);
         public static Color Red = new Color(255, 0, 0);
