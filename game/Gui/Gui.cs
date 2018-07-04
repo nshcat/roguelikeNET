@@ -76,6 +76,15 @@ namespace game.Gui
         {
             Window(title, tl, dim, Style.Foreground, Style.Background);
         }
+
+        /// <summary>
+        /// Set given custom container as current drawing surface.
+        /// </summary>
+        /// <param name="c">Custom container to use</param>
+        public void CustomContainer(Container c)
+        {
+            SetContainer(c);
+        }
         #endregion
         
         
@@ -106,8 +115,8 @@ namespace game.Gui
         /// </summary>
         /// <param name="text">Text to display as button label</param>
         /// <param name="style">Style object describing how the button should be rendered</param>
-        /// <returns>Flag indicating if the button was pressed by the user this frame</returns>
-        public bool Button(string text, ButtonStyle style)
+        /// <returns>Tuple indicating both selection and click state</returns>
+        public (bool, bool) Button(string text, ButtonStyle style)
         {
             // This is not off-by-one, since we did not increment the count yet
             bool isSelected = currentSelection == selectableCount;
@@ -115,7 +124,7 @@ namespace game.Gui
             AddSelectableControl(new Button(CalculatePosition(), text, style, isSelected));
             UpdateVerticalPosition();
 
-            return isSelected && Input.hasKey(Key.Enter);
+            return (isSelected, isSelected && Input.hasKey(Key.Enter));
         }
         
         /// <summary>
@@ -123,7 +132,7 @@ namespace game.Gui
         /// </summary>
         /// <param name="text">Text to display as button label</param>
         /// <returns>Flag indicating if the button was pressed by the user this frame</returns>
-        public bool Button(string text)
+        public (bool, bool) Button(string text)
         {
             return Button(text, Style.ButtonStyle);
         }    
@@ -267,6 +276,23 @@ namespace game.Gui
         
         #region General operations
 
+        
+        /// <summary>
+        /// Checks whether the last specified control was selected in this frame
+        /// </summary>
+        public bool IsSelected => currentSelection == selectableCount - 1;
+
+        /// <summary>
+        /// The index of the currently selected control
+        /// </summary>
+        public int Selection => currentSelection;
+
+        /// <summary>
+        /// Number of known selectable controls
+        /// </summary>
+        public int SelectableControls => selectableCount;
+       
+        
         public void Begin()
         {
             vpos = 0;

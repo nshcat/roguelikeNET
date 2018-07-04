@@ -33,10 +33,32 @@ namespace game.Gui
 
             // Create button string from appropiate template
             var template = IsSelected ? style.SelectedTemplate : style.NonSelectedTemplate;
-            var buttonText = String.Format(template, text.Substring(0, Math.Min(width, text.Length)));
+            
+            // The user can specify a special text color for inverted color mode.
+            // If that is the case, only the actual button text is colored with this
+            // special color, not any of the characters that might be present in the template
+            // string.
+            if (style.OverrideInvertedForegroundColor && IsSelected)
+            {
+                var pos = template.IndexOf("{0}");
 
-            // Center text and draw to screen
-            Screen.drawString(position, buttonText.PadBoth(width), fg, bg); 
+                var prefix = template.Substring(0, pos);
+                var postfix = template.Substring(pos + 3);
+
+                var buttonText = text.Substring(0, Math.Min(width, text.Length)).PadBoth(width);
+                
+                Screen.drawString(position, prefix, fg, bg);
+                Screen.drawString(position + new Position(prefix.Length, 0), buttonText, style.InvertedForeground, bg);
+                Screen.drawString(position + new Position(prefix.Length + buttonText.Length, 0), postfix, fg, bg);
+            }
+            else // Normal case, everything is colored in the same way
+            {         
+                var buttonText = String.Format(template,
+                    text.Substring(0, Math.Min(width, text.Length)).PadBoth(width));
+
+                // Center text and draw to screen
+                Screen.drawString(position, buttonText, fg, bg);
+            }
         }
     }
 }

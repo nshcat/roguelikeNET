@@ -50,6 +50,8 @@ namespace game
             Console.WriteLine($"x.B: {x.B}, x.A: {x.A}");
         }
         
+        int selection = 0;
+        
         public void update(long elapsedTicks)
         {
             /*if (Input.hasKey(Key.Enter) && !hasSpawned)
@@ -62,6 +64,9 @@ namespace game
             /*if(Input.hasKey(Key.K))
                 clr = Color.Green;
             else clr = Color.Black;*/
+
+
+            selection = 0;
             
             g.Begin();
 
@@ -80,25 +85,40 @@ namespace game
             g.IntegerBox("bla", 6, 3, ref x);
             g.Nest();
             g.Label("nyan");
-            g.Button("test1");
+            g.Button("test1");    
             g.Unnest();
             g.Button("test2");
+            if (g.IsSelected)
+                selection = 1;
+            
             g.Label("blab");
             g.Button("test3");
+            if (g.IsSelected)
+                selection = 2;
             g.Nest();
             g.Button("test4");
+            if (g.IsSelected)
+                selection = 3;
             g.Label("blabbb");
             g.Button("test5");
+            if (g.IsSelected)
+                selection = 4;
             g.Label("blabb");
             g.Unnest();
             g.Button("test6");
+            if (g.IsSelected)
+                selection = 5;
             g.Button("test7");
+            if (g.IsSelected)
+                selection = 6;
             g.End();
         }
 
         public void render()
         {
             g.Render();
+            
+            Screen.drawString(new Position(20, 0), selection.ToString(), Color.White, Color.Black);
             
             /*for (uint iy = 0; iy < Screen.Height; ++iy)
             {

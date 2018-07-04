@@ -23,6 +23,14 @@ namespace game.Gui
         public bool OverrideBackgroundColor { get; set; } = false;
         
         /// <summary>
+        /// Whether the button should use a special text color when it gets selected.
+        /// This can be used if inverted colors are desired, but the background color is
+        /// not suitable for it. Note that this only affects the color of the actual button
+        /// label, not any of the template characters.
+        /// </summary>
+        public bool OverrideInvertedForegroundColor { get; set; } = false;
+        
+        /// <summary>
         /// Override front text color. Only used if <see cref="OverrideForegroundColor"/> is true.
         /// </summary>
         public Color Foreground { get; set; } = Color.White;
@@ -33,8 +41,17 @@ namespace game.Gui
         public Color Background { get; set; } = Color.Black;
 
         /// <summary>
+        /// Custom color used for the text in case <see cref="InvertOnSelection"> is true. This is only used if
+        /// <see cref="OverrideInvertedForegroundColor"/> is true.
+        /// </summary>
+        public Color InvertedForeground { get; set; } = Color.Black;
+
+        /// <summary>
         /// The width of the button. If this is set to <see cref="AutoWidth"/>, the implementation
-        /// automatically picks the smallest width possible.
+        /// automatically picks the smallest width possible. Note that this only applies to the
+        /// button text and the text padding, not any possible characters introduced by the template.
+        /// This means that a width of 3 and a template like "_{0}_" will result in a total button width
+        /// of 5 if a button text of size 3 is supplied.
         /// </summary>
         public int Width { get; set; } = AutoWidth;
         

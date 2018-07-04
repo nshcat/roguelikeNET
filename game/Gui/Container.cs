@@ -2,7 +2,7 @@
 
 namespace game.Gui
 {
-    internal abstract class Container
+    public abstract class Container
     {
         protected Position position;
         protected Dimensions dimensions;
