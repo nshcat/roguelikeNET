@@ -54,12 +54,12 @@ namespace game
         
         public void update(long elapsedTicks)
         {
-            /*if (Input.hasKey(Key.Enter) && !hasSpawned)
+            if (Input.hasKey(Key.Enter) && !hasSpawned)
             {
                 new MapGenerator(p => this.prog = p, new Dimensions(1500U, 1500U), new Random().Next(), outImg).Run();
                 //new TestBackgroundTask(p => this.prog = p).Run();
                 hasSpawned = true;
-            }*/
+            }
 
             /*if(Input.hasKey(Key.K))
                 clr = Color.Green;

@@ -78,7 +78,7 @@ namespace game
         }
 
         public void render()
-        {
+        {   
             g.Render();
             images[currentSelection].Draw(new Position(11, 1));
         }

@@ -27,7 +27,7 @@ namespace game
 
             Renderer.IsBatchMode = true;
             
-            CurrentScene = new GUIExampleScene();
+            CurrentScene = new TestScene();//GUIExampleScene();
 
             while (!RenderContext.shouldClose())
             {

@@ -44,13 +44,19 @@ namespace game.Procedual
             {
                 GenerateHeightmap(state);
                 GenerateColoredMap(state);
-                GenerateBiggerImages(state, 4);
+                GenerateTemperatureMap(state);
+                //GenerateBiggerImages(state, 4);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
+        }
+
+        protected void GenerateTemperatureMap(MapGeneratorState state)
+        {
+            GenerateTemperatureMapFor(state.Dimensions, state.Temperature, "temperature");
         }
 
         protected void GenerateHeightmap(MapGeneratorState state)
@@ -167,6 +173,28 @@ namespace game.Procedual
                         c = LerpColor(mountlow, mounthigh, (val - mountainLevel) / (diff - mountainLevel));
                     else
                         c = LerpColor(landlow, landhigh, (val - floodLevel) / (mountainLevel - floodLevel));
+                    
+                    img.SetPixel(ix, iy, c);
+                }
+            }
+
+            // Save to disk
+            img.Save(Path.Combine(OutputPath, "output", RandomName + "_" + postfix + ".png"));
+        }
+        
+        protected void GenerateTemperatureMapFor(Dimensions d, float[,] data, string postfix)
+        {
+            // Create new output image
+            var img = new Bitmap((int) d.X, (int) d.Y);
+
+            for (int ix = 0; ix < d.X; ++ix)
+            {
+                for (int iy = 0; iy < d.Y; ++iy)
+                {
+                    // Retrieve value at given position.
+                    var val = data[ix, iy];
+
+                    Color c = LerpColor(Color.Blue, Color.Red, val);
                     
                     img.SetPixel(ix, iy, c);
                 }
