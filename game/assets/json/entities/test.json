@@ -1,0 +1,11 @@
+[
+  {
+	"name": "cat",
+	"test_component_1": {},
+	"test_component_2": {}
+  },
+  {
+	"name": "dog",
+	"test_component_2": {}
+  }
+]

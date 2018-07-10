@@ -24,7 +24,9 @@ namespace game
         public void run(string[] args)
         {
             Engine.initialize(new GameInfo("dragonhoard", "0.0.1", "libascii test"), args);
-
+            
+            EntityComponent.EntityManager.Initialize();
+            
             Renderer.IsBatchMode = true;
             
             CurrentScene = new TestScene();//GUIExampleScene();
