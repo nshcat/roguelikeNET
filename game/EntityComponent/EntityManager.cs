@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using game.Ascii;
 using Newtonsoft.Json;
@@ -28,6 +29,15 @@ namespace game.EntityComponent
         } = new Dictionary<string, EntityTypeInfo>();
 
         /// <summary>
+        /// Collection of all known entities.
+        /// </summary>
+        private static Dictionary<Guid, Entity> Entities
+        {
+            get;
+        } = new Dictionary<Guid, Entity>();
+        
+
+        /// <summary>
         /// Initialize the entity manager. This has to be called before any other method can be used.
         /// </summary>
         public static void Initialize()
@@ -36,6 +46,88 @@ namespace game.EntityComponent
             LoadEntities();
         }
 
+        /// <summary>
+        /// Construct an entity of given type
+        /// </summary>
+        /// <param name="type">Name of the type of the new entity</param>
+        /// <returns>Constructed entity</returns>
+        public static Entity Construct(string type)
+        {
+            // Check if the type actually exists
+            if (!HasEntityType(type))
+            {
+                Logger.postMessage(SeverityLevel.Fatal, "EntityManager", String.Format("Unknown entity type \"{0}\"", type));
+                throw new UnknownEntityTypeException();
+            }
+            
+            // Construct empty Entity
+            var entity = new Entity();
+
+            // Retrieve entity type information object
+            var info = TypeInfos[type];
+
+            // Retrieve entity type JSON node
+            var obj = JsonObjectCache[type];
+            
+            // Initialize all components
+            foreach (var currentComponent in info.Components)
+            {
+                // Retrieve JSON subobject corresponding to current component
+                var subObject = obj[currentComponent] as JObject;
+                
+                // Retrieve component type object
+                var componentType = ComponentManager.GetComponentType(currentComponent);
+                
+                // Construct empty component instance
+                var component = Activator.CreateInstance(componentType) as IComponent;
+                
+                // Check for possible failure
+                if (component == null)
+                {
+                    Logger.postMessage(SeverityLevel.Fatal, "EntityManager", String.Format("Could not create instance of component \"{0}\"", currentComponent));
+                    throw new Exception(String.Format("Could not create instance of component \"{0}\"", currentComponent));
+                }
+
+                // Parse JSON subobject
+                component.Construct(subObject);
+             
+                // Add it to entity
+                entity.Components.Add(currentComponent, component);
+            }
+            
+            return entity;
+        }
+
+        public static bool HasEntityType(string type)
+        {
+            return TypeInfos.ContainsKey(type);
+        }
+
+        
+        /// <summary>
+        /// Destroy entity with given ID. This will cause the entity to get removed from the global
+        /// entity collection, which means that it will be garbage collected eventually, given that
+        /// no other references to it exist.
+        /// </summary>
+        /// <param name="id">Id of the entity to destroy</param>
+        public static void Destroy(Guid id)
+        {
+            if(!HasEntity(id))
+                Logger.postMessage(SeverityLevel.Warning, "EntityManager", String.Format("Tried to destroy non-existing entity with id \"{0}\"", id));
+
+            Entities.Remove(id);
+        }
+
+        /// <summary>
+        /// Check if there is a known entity with given ID.
+        /// </summary>
+        /// <param name="id">ID to check for</param>
+        /// <returns>Flag indicating if entity exists with given ID</returns>
+        public static bool HasEntity(Guid id)
+        {
+            return Entities.ContainsKey(id);
+        }
+        
         /// <summary>
         /// Load all entity definitions
         /// </summary>
@@ -84,7 +176,6 @@ namespace game.EntityComponent
                     throw;
                 }
             }
-
         }
     }
 }
