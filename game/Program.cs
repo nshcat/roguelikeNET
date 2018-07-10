@@ -26,10 +26,12 @@ namespace game
             Engine.initialize(new GameInfo("dragonhoard", "0.0.1", "libascii test"), args);
             
             EntityComponent.EntityManager.Initialize();
+            var entity = EntityComponent.EntityManager.Construct("cat");
             
             Renderer.IsBatchMode = true;
             
             CurrentScene = new TestScene();//GUIExampleScene();
+            
 
             while (!RenderContext.shouldClose())
             {

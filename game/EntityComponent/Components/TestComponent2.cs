@@ -21,7 +21,7 @@ namespace game.EntityComponent.Components
 
         public void Construct(JObject obj)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

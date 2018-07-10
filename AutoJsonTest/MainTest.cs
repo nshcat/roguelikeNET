@@ -59,6 +59,17 @@ namespace AutoJsonTest
             set;
         }
     }
+
+    [Deserializable]
+    public class Bar
+    {
+        [Key("chirp")]
+        public int Chirp
+        {
+            get;
+            set;
+        }
+    }
     
     
     public class MainTest
@@ -90,6 +101,22 @@ namespace AutoJsonTest
             Assert.Equal(1337, Deserialize(src).Meow);
         }
 
+        [Fact]
+        public void TestPopulate()
+        {
+            var src = "{ \"chirp\" : 1337 }";
+            
+            var instance = new Bar();
+
+            Populate(instance, src);
+            
+            Assert.Equal(1337, instance.Chirp);
+        }
+
+        private void Populate<T>(T instance, string src)
+        {
+            JsonLoader.Populate<T>(instance, JObject.Parse(src));
+        }
         
         private Test Deserialize(string src)
         {

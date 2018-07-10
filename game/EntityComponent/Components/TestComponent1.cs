@@ -1,12 +1,20 @@
 ﻿using System;
-using System.Runtime.InteropServices;
+using game.AutoJson;
 using Newtonsoft.Json.Linq;
 
 namespace game.EntityComponent.Components
 {
+    [Deserializable]
     public class TestComponent1 : IComponent
     {
         public static string Identifier => "test_component_1";
+
+        [Key("test_data")]     
+        public int TestData
+        {
+            get;
+            set;
+        }
 
 
         string IComponent.Identifier()
@@ -21,7 +29,7 @@ namespace game.EntityComponent.Components
 
         public void Construct(JObject obj)
         {
-            throw new NotImplementedException();
+            JsonLoader.Populate(this, obj);
         }
     }
 }

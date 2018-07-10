@@ -10,6 +10,15 @@ namespace game.AutoJson
 {
     public static class JsonLoader
     {
+        public static void Populate<T>(T instance, JObject o)
+        {
+            Deserialize(instance, typeof(T), o);
+        }     
+        
+        /*public static void Populate<T>(T instance, JObject o, string key)
+        {
+            Deserialize<T>(instance, (JObject)o[key]);
+        } */
 
         public static T Deserialize<T>(JObject o, string key)
         {
@@ -18,13 +27,13 @@ namespace game.AutoJson
         
         public static T Deserialize<T>(JObject t)
         {
-            return (T) Deserialize(typeof(T), t);
+            return (T) Deserialize(Activator.CreateInstance<T>(), typeof(T), t);
         }
 
-        private static object Deserialize(Type type, JObject t)
+        private static object Deserialize(object instance, Type type, JObject t)
         { 
             // Create empty object TODO check for constructor without arguments first
-            var result = Activator.CreateInstance(type);
+            //var result = Activator.CreateInstance(type);
                  
             // Inspect all properties and fields of type T          
             foreach (var prop in type.GetProperties())
@@ -45,12 +54,12 @@ namespace game.AutoJson
                         // Is there a default value?
                         if (Attribute.IsDefined(prop, typeof(DefaultValue)))
                         {
-                            prop.SetValue(result, (prop.GetCustomAttributes(typeof(DefaultValue), false)[0] as DefaultValue).Value);
+                            prop.SetValue(instance, (prop.GetCustomAttributes(typeof(DefaultValue), false)[0] as DefaultValue).Value);
                         }
                         else
                         {
                             // Default initialize
-                            prop.SetValue(result, DefaultConstruct(prop.PropertyType));                            
+                            prop.SetValue(instance, DefaultConstruct(prop.PropertyType));                            
                         }
                     }
                     else
@@ -59,12 +68,12 @@ namespace game.AutoJson
                         var value = ReadValue(prop, t[keyAttr.Value]);
 
                         // Store it
-                        prop.SetValue(result, value);
+                        prop.SetValue(instance, value);
                     }                   
                 }
             }
 
-            return result;
+            return instance;
         }
 
         public static List<T> DeserializeMany<T>(JObject obj)
@@ -121,7 +130,7 @@ namespace game.AutoJson
                 if(elem.Type != JTokenType.Object)
                     throw new ArgumentException(string.Format("JToken needs to be object to allow deserialization of \"{0}\"", t));
 
-                return Deserialize(t, (JObject)elem);
+                return Deserialize(Activator.CreateInstance(t), t, (JObject)elem);
             }
             else
             {
