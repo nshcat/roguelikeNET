@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using game.Ascii;
+using game.EntityComponent.Components;
 using Newtonsoft.Json.Linq;
 using SadRex;
 
@@ -27,6 +28,10 @@ namespace game
             
             EntityComponent.EntityManager.Initialize();
             var entity = EntityComponent.EntityManager.Construct("cat");
+            var entity2 = EntityComponent.EntityManager.Construct("cat");
+            var entity3 = EntityComponent.EntityManager.Construct("dog");
+
+            var result = EntityComponent.EntityManager.GetEntities<EntityComponent.Components.TestComponent1>();
             
             Renderer.IsBatchMode = true;
             

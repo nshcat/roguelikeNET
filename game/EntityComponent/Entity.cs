@@ -35,7 +35,7 @@ namespace game.EntityComponent
         public string TypeName
         {
             get;
-            protected set;
+            set;
         } 
         
         /// <summary>
@@ -68,13 +68,10 @@ namespace game.EntityComponent
         /// <exception cref="ArgumentException">If given type is not a component type</exception>
         public bool HasComponent(Type ty)
         {
-            if(!ty.IsSubclassOf(typeof(IComponent)))
+            if(!ComponentManager.IsComponent(ty))
                 throw new ArgumentException("Given type is not a component");
-            
-            // Retrieve string identifier associated with that particular component type
-            var id = ty.GetProperty("Identifier", BindingFlags.Static | BindingFlags.FlattenHierarchy).GetValue(null) as string;
  
-            return HasComponent(id);
+            return HasComponent(ComponentManager.GetComponentId(ty));
         }
 
         /// <summary>
@@ -107,13 +104,10 @@ namespace game.EntityComponent
         /// <exception cref="ArgumentException">If no component with given type is currently part of this entity</exception>
         public IComponent GetComponent(Type ty)
         {       
-            if(!ty.IsSubclassOf(typeof(IComponent)))
-                throw new ArgumentException("Given type is not a component");
-            
-            // Retrieve string identifier associated with that particular component type
-            var id = ty.GetProperty("Id", BindingFlags.Static | BindingFlags.FlattenHierarchy).GetValue(null) as string;
+            if(!ComponentManager.IsComponent(ty))
+                throw new ArgumentException("Given type is not a component");      
 
-            return GetComponent(id);
+            return GetComponent(ComponentManager.GetComponentId(ty));
         }
 
         /// <summary>

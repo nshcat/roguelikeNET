@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection.Metadata;
-using System.Runtime.InteropServices;
+using System.Linq;
 using game.Ascii;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -47,6 +46,31 @@ namespace game.EntityComponent
         }
 
         /// <summary>
+        /// Get all entities that contain a component of given type that satisfies the given predicate
+        /// </summary>
+        /// <param name="predicate">Predicate operating on component instance</param>
+        /// <typeparam name="T">Type of the component to filter by</typeparam>
+        /// <returns>Collection of entities as result of filter operation</returns>
+        public static IEnumerable<Entity> GetEntities<T>(Func<T, bool> predicate) where T : class, IComponent
+        {  
+            return Entities
+                .Select(x => x.Value)
+                .Where(x => x.HasComponent<T>())
+                .Where(x => predicate(x.GetComponent<T>()))
+                .ToList();
+        }
+        
+        /// <summary>
+        /// Get all entities that contain a component of given type
+        /// </summary>
+        /// <typeparam name="T">Type of the component to filter by</typeparam>
+        /// <returns>Collection of entities as result of filter operation</returns>
+        public static IEnumerable<Entity> GetEntities<T>() where T : class, IComponent
+        {
+            return GetEntities<T>(_ => true);
+        }
+
+        /// <summary>
         /// Construct an entity of given type
         /// </summary>
         /// <param name="type">Name of the type of the new entity</param>
@@ -62,6 +86,9 @@ namespace game.EntityComponent
             
             // Construct empty Entity
             var entity = new Entity();
+            
+            // Set type name
+            entity.TypeName = type;
 
             // Retrieve entity type information object
             var info = TypeInfos[type];
@@ -94,6 +121,9 @@ namespace game.EntityComponent
                 // Add it to entity
                 entity.Components.Add(currentComponent, component);
             }
+            
+            // Add entity to global storage
+            Entities.Add(entity.UniqueID, entity);
             
             return entity;
         }

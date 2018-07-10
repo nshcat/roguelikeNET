@@ -66,5 +66,29 @@ namespace game.EntityComponent
 
             return ComponentTypes[id];
         }
+
+        /// <summary>
+        /// Checks whether a given type is a component
+        /// </summary>
+        /// <param name="t">Type to check</param>
+        /// <returns>Flag indicating if given type is a component</returns>
+        public static bool IsComponent(Type t)
+        {
+            return typeof(IComponent).IsAssignableFrom(t) && typeof(IComponent) != t;
+        }
+
+        
+        /// <summary>
+        /// Retrieves unique id from given component type
+        /// </summary>
+        /// <param name="t">Type to extract ID from</param>
+        /// <returns>Unique id for given component type</returns>
+        public static string GetComponentId(Type t)
+        {
+            if(!IsComponent(t))
+                throw new ArgumentException("Given type is not a component");
+            
+            return t.GetProperty("Identifier",  BindingFlags.Static | BindingFlags.Public).GetValue(null) as string;
+        }
     }
 }
