@@ -27,7 +27,7 @@ namespace game.EntityComponent
         public Guid UniqueID
         {
             get;
-        } = Guid.NewGuid();
+        } = Guid.NewGuid();     
 
         /// <summary>
         /// A string uniquely identifying the type this entity currently implements

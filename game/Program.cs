@@ -33,6 +33,13 @@ namespace game
 
             var result = EntityComponent.EntityManager.GetEntities<EntityComponent.Components.TestComponent1>();
             
+            
+            var result2 = EntityComponent.EntityManager.AllEntities
+                            .GetEntities<TestComponent2>()
+                            .GetEntities<TestComponent1>(x => x.TestData == 42);
+                        
+            
+            
             Renderer.IsBatchMode = true;
             
             CurrentScene = new TestScene();//GUIExampleScene();

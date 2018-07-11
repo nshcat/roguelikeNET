@@ -34,7 +34,11 @@ namespace game.EntityComponent
         {
             get;
         } = new Dictionary<Guid, Entity>();
-        
+
+        /// <summary>
+        /// Query result containing all entities. This can be used as a starting point to build chained queries.
+        /// </summary>
+        public static EntityQueryResult AllEntities => new EntityQueryResult(Entities.Values);     
 
         /// <summary>
         /// Initialize the entity manager. This has to be called before any other method can be used.
@@ -52,7 +56,7 @@ namespace game.EntityComponent
         /// <typeparam name="T">Type of the component to filter by</typeparam>
         /// <returns>Collection of entities as result of filter operation</returns>
         public static IEnumerable<Entity> GetEntities<T>(Func<T, bool> predicate) where T : class, IComponent
-        {  
+        {
             return Entities
                 .Select(x => x.Value)
                 .Where(x => x.HasComponent<T>())
