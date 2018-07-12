@@ -134,6 +134,8 @@ namespace game.EntityComponent
                     Logger.postMessage(SeverityLevel.Fatal, "EntityManager",
                         String.Format("Found duplicate component type while constructing entity of type \"{0}\": \"{1}\"", e.TypeName, currentComponent));
                     
+                    Logger.postMessage(SeverityLevel.Info, "EntityManager", "This could indicate a circular dependency in the entity definition");
+                    
                     throw new ArgumentException();
                 }
                 
