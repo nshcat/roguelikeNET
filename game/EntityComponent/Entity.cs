@@ -37,18 +37,6 @@ namespace game.EntityComponent
             get;
             set;
         } 
-        
-        /// <summary>
-        /// Construct a new entity from given JSON document node. This will try to construct
-        /// all components specified in the JSON document node.
-        /// </summary>
-        /// <param name="obj">JSON document node to use as data source</param>
-        /// <returns>Constructed entity</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static Entity Construct(JObject obj)
-        {
-            throw new NotImplementedException();        
-        }
 
         /// <summary>
         /// Check if an entity contains the given component.

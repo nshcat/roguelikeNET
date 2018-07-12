@@ -47,6 +47,7 @@ namespace game.EntityComponent
         {
             ComponentManager.Initialize();
             LoadEntities();
+            CheckDependencies();
         }
 
         /// <summary>
@@ -88,26 +89,58 @@ namespace game.EntityComponent
                 throw new UnknownEntityTypeException();
             }
             
+            // Retrieve entity type information object
+            var info = TypeInfos[type];
+            
+            // Check if constructing entities of this type is actually allowed
+            if (info.IsTemplate)
+            {
+                Logger.postMessage(SeverityLevel.Fatal, "EntityManager",
+                    String.Format("Entities of type \"{0}\" cannot be constructed, since type was defined to be a template", type));
+                throw new UnknownEntityTypeException();
+            }
+
             // Construct empty Entity
             var entity = new Entity();
             
             // Set type name
             entity.TypeName = type;
 
-            // Retrieve entity type information object
-            var info = TypeInfos[type];
+            // Populate with components from type info and those inherited from base types
+            Construct(entity, info);
+            
+            // Add entity to global storage
+            Entities.Add(entity.UniqueID, entity);
+            
+            return entity;
+        }
 
-            // Retrieve entity type JSON node
-            var obj = JsonObjectCache[type];
+        private static void Construct(Entity e, EntityTypeInfo type)
+        {
+            // Retrieve entity type JSON node. This is safe since we checked that
+            // the type is actually known to us beforehand.
+            var obj = JsonObjectCache[type.Name];
             
             // Initialize all components
-            foreach (var currentComponent in info.Components)
+            foreach (var currentComponent in type.Components)
             {
-                // Retrieve JSON subobject corresponding to current component
-                var subObject = obj[currentComponent] as JObject;
-                
                 // Retrieve component type object
                 var componentType = ComponentManager.GetComponentType(currentComponent);
+                
+                // Check if an instance of that component type already exists in the currently constructed
+                // entity. This could indicate a circular dependency
+                if (e.HasComponent(componentType))
+                {
+                    Logger.postMessage(SeverityLevel.Fatal, "EntityManager",
+                        String.Format("Found duplicate component type while constructing entity of type \"{0}\": \"{1}\"", e.TypeName, currentComponent));
+                    
+                    Logger.postMessage(SeverityLevel.Info, "EntityManager", "This could indicate a circular dependency in the entity definition");
+                    
+                    throw new ArgumentException();
+                }
+                
+                // Retrieve JSON subobject corresponding to current component
+                var subObject = obj[currentComponent] as JObject;                        
                 
                 // Construct empty component instance
                 var component = Activator.CreateInstance(componentType) as IComponent;
@@ -123,21 +156,27 @@ namespace game.EntityComponent
                 component.Construct(subObject);
              
                 // Add it to entity
-                entity.Components.Add(currentComponent, component);
+                e.Components.Add(currentComponent, component);
             }
             
-            // Add entity to global storage
-            Entities.Add(entity.UniqueID, entity);
-            
-            return entity;
+            // Do the same with all registered base entities/templates
+            foreach (var baseType in type.Bases)
+            {
+                // We know that this type exists, since we called CheckDependencies earlier.
+                Construct(e, TypeInfos[baseType]);
+            }
         }
 
+        /// <summary>
+        /// Check if an entity type with given string identifier is known.
+        /// </summary>
+        /// <param name="type">String identifier to check for</param>
+        /// <returns>Flag indicating presence of an entity type with given identifier</returns>
         public static bool HasEntityType(string type)
         {
             return TypeInfos.ContainsKey(type);
         }
 
-        
         /// <summary>
         /// Destroy entity with given ID. This will cause the entity to get removed from the global
         /// entity collection, which means that it will be garbage collected eventually, given that
@@ -209,6 +248,26 @@ namespace game.EntityComponent
                     
                     throw;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Check that all template dependencies are actually valid
+        /// </summary>
+        private static void CheckDependencies()
+        {
+            foreach (var type in TypeInfos.Values)
+            {
+                foreach (var dependency in type.Bases)
+                {
+                    if (!HasEntityType(dependency))
+                    {
+                        Logger.postMessage(SeverityLevel.Fatal, "EntityManager",
+                            String.Format("Entity type \"{0}\" depends on invalid entity/template type \"{1}\"", type.Name, dependency));
+                        
+                        throw new EntityDependencyException();
+                    }
+                }       
             }
         }
     }
