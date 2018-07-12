@@ -80,7 +80,42 @@ namespace game.EntityComponent
         /// </summary>
         /// <param name="type">Name of the type of the new entity</param>
         /// <returns>Constructed entity</returns>
+        /// <exception cref="UnknownEntityTypeException">If the given entity type is not valid</exception>
         public static Entity Construct(string type)
+        {
+            // Construct entity
+            var entity = ConstructInternal(type);
+            
+            // This entity is requested to be globally managed, so
+            // register it with this manager
+            Entities.Add(entity.UniqueID, entity);
+
+            return entity;
+        }
+        
+        /// <summary>
+        /// Construct a temporary entity of given type. Temporary entities are not registered
+        /// with the global entity manager can thus not get queried. Their use is for data retrieval
+        /// only.
+        /// </summary>
+        /// <param name="type">Name of the type of the new, temporary entity</param>
+        /// <returns>Constructed entity</returns>
+        /// <exception cref="UnknownEntityTypeException">If the given entity type is not valid</exception>
+        public static Entity ConstructTemporary(string type)
+        {
+            // The internal implementation method does everything we need
+            return ConstructInternal(type);
+        }
+        
+        
+        /// <summary>
+        /// Internal implementation of entity construction. Construct entity with given type name.
+        /// This will do recursive calls to process the potentially multi-leveled inheritance tree.
+        /// </summary>
+        /// <param name="type">Type of the entity to construct</param>
+        /// <returns></returns>
+        /// <exception cref="UnknownEntityTypeException">If the given entity type is not valid</exception>
+        private static Entity ConstructInternal(string type)
         {
             // Check if the type actually exists
             if (!HasEntityType(type))
@@ -107,15 +142,21 @@ namespace game.EntityComponent
             entity.TypeName = type;
 
             // Populate with components from type info and those inherited from base types
-            Construct(entity, info);
-            
-            // Add entity to global storage
-            Entities.Add(entity.UniqueID, entity);
+            ConstructInternal(entity, info); 
             
             return entity;
         }
 
-        private static void Construct(Entity e, EntityTypeInfo type)
+        /// <summary>
+        /// Internal implementation of entity construction. Populates entity components with those
+        /// associated with given entity type info object, and then continues recursively for any
+        /// base types present in the type.
+        /// </summary>
+        /// <param name="e">Entity to populate</param>
+        /// <param name="type">Entity type info object to retrieve component types from</param>
+        /// <exception cref="EntityDependencyException">If a component of a given type already exists in the entity.</exception>
+        /// <exception cref="Exception">If component construction fails</exception>
+        private static void ConstructInternal(Entity e, EntityTypeInfo type)
         {
             // Retrieve entity type JSON node. This is safe since we checked that
             // the type is actually known to us beforehand.
@@ -136,7 +177,7 @@ namespace game.EntityComponent
                     
                     Logger.postMessage(SeverityLevel.Info, "EntityManager", "This could indicate a circular dependency in the entity definition");
                     
-                    throw new ArgumentException();
+                    throw new EntityDependencyException("Multiple components of same type detected");
                 }
                 
                 // Retrieve JSON subobject corresponding to current component
@@ -163,7 +204,7 @@ namespace game.EntityComponent
             foreach (var baseType in type.Bases)
             {
                 // We know that this type exists, since we called CheckDependencies earlier.
-                Construct(e, TypeInfos[baseType]);
+                ConstructInternal(e, TypeInfos[baseType]);
             }
         }
 
