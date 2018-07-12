@@ -35,10 +35,17 @@ namespace game
             
             
             var result2 = EntityComponent.EntityManager.AllEntities
-                            .GetEntities<TestComponent2>()
-                            .GetEntities<TestComponent1>(x => x.TestData == 42);
-                        
-            
+                .GetEntities<TestComponent2>()
+                .GetEntities<TestComponent1>(x => x.TestData == 42);
+
+
+            var c = result2.GetComponents<TestComponent1>().ToList();
+
+
+            var c2 = EntityComponent.EntityManager.AllEntities
+                .GetEntities<TestComponent3>()
+                .GetComponents<TestComponent3>()
+                .ToList();
             
             Renderer.IsBatchMode = true;
             

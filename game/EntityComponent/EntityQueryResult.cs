@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace game.EntityComponent
 {
@@ -41,7 +42,7 @@ namespace game.EntityComponent
             
             return new EntityQueryResult(result);
         }
-        
+
         /// <summary>
         /// Get all entities that contain a component of given type
         /// </summary>
@@ -50,8 +51,19 @@ namespace game.EntityComponent
         public EntityQueryResult GetEntities<T>() where T : class, IComponent
         {
             return GetEntities<T>(_ => true);
-        }          
-        
+        }
+
+        /// <summary>
+        /// Extract component of given type from every entity in this result. This will fail if
+        /// there are entities that do not have a matching component.
+        /// </summary>
+        /// <typeparam name="T">Type of component to extract</typeparam>
+        /// <returns>Collection of the extracted components</returns>
+        public IEnumerable<T> GetComponents<T>() where T : class, IComponent
+        {
+            return Result.Select(x => x.GetComponent<T>());
+        }
+
         public IEnumerator<Entity> GetEnumerator()
         {
             return Result.GetEnumerator();
