@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using game.Ascii;
 using game.EntityComponent.Components;
 using Newtonsoft.Json.Linq;
@@ -91,7 +92,7 @@ namespace game
         }
         
         static void Main(string[] args)
-        {
+        {   
             var p = new Program();
             p.run(args);
         }
