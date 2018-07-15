@@ -32,6 +32,8 @@ namespace game
             var entity = EntityComponent.EntityManager.Construct("cat");
             var entity2 = EntityComponent.EntityManager.Construct("cat");
             var entity3 = EntityComponent.EntityManager.Construct("dog");
+            var entity4 = EntityManager.Construct("snake");
+            var entity5 = EntityManager.Construct("bug");
             
             var result = EntityComponent.EntityManager.GetEntities<EntityComponent.Components.TestComponent1>();
             
@@ -52,6 +54,8 @@ namespace game
                 .ToList();
 
             var r = EntityComponent.EntityManager.GetTypes<TestComponent1>().ToList();
+
+            var r2 = EntityManager.GetEntities<BaseComponent>().ToList();
             
             Renderer.IsBatchMode = true;
             
