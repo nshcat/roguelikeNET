@@ -32,10 +32,7 @@ namespace game
             var entity = EntityComponent.EntityManager.Construct("cat");
             var entity2 = EntityComponent.EntityManager.Construct("cat");
             var entity3 = EntityComponent.EntityManager.Construct("dog");
-            var entity4 = EntityComponent.EntityManager.Construct("test_entity");
-            var entity5 = EntityManager.Construct("test_entity2");
-            var entity6 = EntityManager.Construct("test_entity3");
-
+            
             var result = EntityComponent.EntityManager.GetEntities<EntityComponent.Components.TestComponent1>();
             
             
@@ -44,11 +41,6 @@ namespace game
             var result2 = EntityComponent.EntityManager.AllEntities
                 .GetEntities<TestComponent2>()
                 .GetEntities<TestComponent1>(x => x.TestData == 42);
-
-
-            var result3 = EntityManager.AllEntities
-                .GetEntities<ComponentBase>()
-                .ToList();
 
 
             var c = result2.GetComponents<TestComponent1>().ToList();
