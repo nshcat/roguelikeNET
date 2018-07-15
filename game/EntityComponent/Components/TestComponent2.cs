@@ -9,11 +9,6 @@ namespace game.EntityComponent.Components
         public static string Identifier => "test_component_2";
 
 
-        string IComponent.Identifier()
-        {
-            return Identifier;
-        }
-
         public Type ComponentType()
         {
             return typeof(TestComponent2);

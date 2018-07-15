@@ -9,12 +9,6 @@ namespace game.EntityComponent
     public interface IComponent
     {
         /// <summary>
-        /// Retrieve textual identifier uniquely identifying this component type
-        /// </summary>
-        /// <returns>A string uniquely identifying this type of component</returns>
-        string Identifier();
-
-        /// <summary>
         /// Returns the type information of this component.
         /// </summary>
         /// <returns>Type information of the implementing class</returns>

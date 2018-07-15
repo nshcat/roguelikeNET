@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
 
 namespace game.EntityComponent
@@ -59,7 +61,18 @@ namespace game.EntityComponent
             if(!ComponentManager.IsComponent(ty))
                 throw new ArgumentException("Given type is not a component");
  
-            return HasComponent(ComponentManager.GetComponentId(ty));
+            // Optimization: Since components can only have abstract base classes,
+            // we only need to determine all derived class in that special case.
+            if (ty.IsAbstract)
+            {
+
+                // Retrieve all component types that derive from this type
+                var types = ComponentManager.GetDerived(ty);
+
+                // Check if any of the derived component types is registered with this entity type
+                return Components.Keys.Intersect(types.Select(ComponentManager.GetComponentId)).Count() != 0;
+            }
+            else return HasComponent(ComponentManager.GetComponentId(ty));
         }
 
         /// <summary>
@@ -69,9 +82,13 @@ namespace game.EntityComponent
         /// <returns>Flag indicating the presence of the particular component</returns>
         public bool HasComponent(string id)
         {
-            if (Components.ContainsKey(id))
-                return true;
-            else return false;
+            if(!ComponentManager.IsComponentKnown(id))
+                throw new UnknownComponentException(String.Format("Id \"{0}\" does not refer to a valid component type", id));
+         
+            // Since only non-abstract component types can have IDs and we only
+            // allow abstract types as base types for components, just doing a look 
+            // up here is fine
+            return Components.ContainsKey(id);
         }
 
         /// <summary>
@@ -91,11 +108,17 @@ namespace game.EntityComponent
         /// <returns>Reference to the stored component</returns>
         /// <exception cref="ArgumentException">If no component with given type is currently part of this entity</exception>
         public IComponent GetComponent(Type ty)
-        {       
-            if(!ComponentManager.IsComponent(ty))
-                throw new ArgumentException("Given type is not a component");      
+        {
+            if (!ComponentManager.IsComponent(ty))
+                throw new ArgumentException("Given type is not a component");
 
-            return GetComponent(ComponentManager.GetComponentId(ty));
+            if (ty.IsAbstract)
+            {
+                var types = ComponentManager.GetDerived(ty);
+                var key = Components.Keys.Intersect(types.Select(ComponentManager.GetComponentId)).First();
+                return Components[key];
+            }
+            else return GetComponent(ComponentManager.GetComponentId(ty));
         }
 
         /// <summary>

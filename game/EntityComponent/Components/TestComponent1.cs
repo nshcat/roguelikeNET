@@ -16,12 +16,6 @@ namespace game.EntityComponent.Components
             set;
         }
 
-
-        string IComponent.Identifier()
-        {
-            return Identifier;
-        }
-
         public Type ComponentType()
         {
             return typeof(TestComponent1);

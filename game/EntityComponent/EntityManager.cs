@@ -51,7 +51,9 @@ namespace game.EntityComponent
         }
 
         /// <summary>
-        /// Get all entities that contain a component of given type that satisfies the given predicate
+        /// Get all entities that contain a component of given type that satisfies the given predicate.
+        /// Abstract component types are allowed here and result in all entities with derived component types
+        /// to get chosen.
         /// </summary>
         /// <param name="predicate">Predicate operating on component instance</param>
         /// <typeparam name="T">Type of the component to filter by</typeparam>
@@ -82,13 +84,15 @@ namespace game.EntityComponent
         /// <returns>Collection of entity type infos</returns>
         public static IEnumerable<EntityTypeInfo> GetTypes<T>() where T : class, IComponent
         {
-            // Retrieve component type name
-            var name = ComponentManager.GetComponentId(typeof(T));
+            // Retrieve component type names. Since T could be an abstract type or a type
+            // which has derived types, we need to collect all component type names that
+            // are derived from this one.
+            var names = ComponentManager.GetDerived(typeof(T));
             
             // Filter all known entity types. Disregard templates.
             return TypeInfos
                 .Values
-                .Where(x => x.Components.Contains(name))
+                .Where(x => x.Components.Intersect(names.Select(ComponentManager.GetComponentId)).Count() != 0)
                 .Where(x => !x.IsTemplate);
         }
 
