@@ -47,6 +47,8 @@ namespace game
                 .GetEntities<TestComponent3>()
                 .GetComponents<TestComponent3>()
                 .ToList();
+
+            var r = EntityComponent.EntityManager.GetTypes<TestComponent1>().ToList();
             
             Renderer.IsBatchMode = true;
             

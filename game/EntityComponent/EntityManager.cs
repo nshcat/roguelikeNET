@@ -76,6 +76,33 @@ namespace game.EntityComponent
         }
 
         /// <summary>
+        /// Determine all entity types that contain a component with given type
+        /// </summary>
+        /// <typeparam name="T">Type of component to filter by</typeparam>
+        /// <returns>Collection of entity type infos</returns>
+        public static IEnumerable<EntityTypeInfo> GetTypes<T>() where T : class, IComponent
+        {
+            // Retrieve component type name
+            var name = ComponentManager.GetComponentId(typeof(T));
+            
+            // Filter all known entity types. Disregard templates.
+            return TypeInfos
+                .Values
+                .Where(x => x.Components.Contains(name))
+                .Where(x => !x.IsTemplate);
+        }
+
+        /// <summary>
+        /// Construct a temporary instance for all entity types that contain a component of given type
+        /// </summary>
+        /// <typeparam name="T">Type of component to filter by</typeparam>
+        /// <returns>Collection of temporary entity instances</returns>
+        public static IEnumerable<Entity> ConstructTemporaries<T>() where T : class, IComponent
+        {
+            return GetTypes<T>().Select(x => Construct(x.Name));
+        }
+     
+        /// <summary>
         /// Construct an entity of given type
         /// </summary>
         /// <param name="type">Name of the type of the new entity</param>
