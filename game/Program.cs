@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using game.Ascii;
+using game.EntityComponent;
 using game.EntityComponent.Components;
 using Newtonsoft.Json.Linq;
 using SadRex;
@@ -31,13 +32,23 @@ namespace game
             var entity = EntityComponent.EntityManager.Construct("cat");
             var entity2 = EntityComponent.EntityManager.Construct("cat");
             var entity3 = EntityComponent.EntityManager.Construct("dog");
+            var entity4 = EntityComponent.EntityManager.Construct("test_entity");
+            var entity5 = EntityManager.Construct("test_entity2");
+            var entity6 = EntityManager.Construct("test_entity3");
 
             var result = EntityComponent.EntityManager.GetEntities<EntityComponent.Components.TestComponent1>();
+            
+            
             
             
             var result2 = EntityComponent.EntityManager.AllEntities
                 .GetEntities<TestComponent2>()
                 .GetEntities<TestComponent1>(x => x.TestData == 42);
+
+
+            var result3 = EntityManager.AllEntities
+                .GetEntities<ComponentBase>()
+                .ToList();
 
 
             var c = result2.GetComponents<TestComponent1>().ToList();
@@ -94,7 +105,7 @@ namespace game
         }
         
         static void Main(string[] args)
-        {   
+        {    
             var p = new Program();
             p.run(args);
         }

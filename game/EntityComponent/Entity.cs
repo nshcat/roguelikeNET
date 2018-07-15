@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
 
 namespace game.EntityComponent
@@ -59,7 +61,11 @@ namespace game.EntityComponent
             if(!ComponentManager.IsComponent(ty))
                 throw new ArgumentException("Given type is not a component");
  
-            return HasComponent(ComponentManager.GetComponentId(ty));
+            // Retrieve all component types that derive from this type
+            var types = ComponentManager.GetDerived(ty);
+
+            // Check if any of the derived component types is registered with this entity type
+            return Components.Keys.Intersect(types.Select(ComponentManager.GetComponentId)).Count() != 0;
         }
 
         /// <summary>
@@ -69,9 +75,12 @@ namespace game.EntityComponent
         /// <returns>Flag indicating the presence of the particular component</returns>
         public bool HasComponent(string id)
         {
-            if (Components.ContainsKey(id))
-                return true;
-            else return false;
+            if(!ComponentManager.IsComponentKnown(id))
+                throw new UnknownComponentException(String.Format("Id \"{0}\" does not refer to a valid component type", id));
+
+            // We cant just check if the key exists in the dictionary, since there might be
+            // derived component types that would not be found that way
+            return HasComponent(ComponentManager.GetComponentType(id));
         }
 
         /// <summary>
@@ -95,7 +104,12 @@ namespace game.EntityComponent
             if(!ComponentManager.IsComponent(ty))
                 throw new ArgumentException("Given type is not a component");      
 
-            return GetComponent(ComponentManager.GetComponentId(ty));
+            // Even though we search for given type and all derived types, there
+            // can always just be one result here, since HasComponent is checked
+            // when a new entity is added.
+            var types = ComponentManager.GetDerived(ty);
+            var key = Components.Keys.Intersect(types.Select(ComponentManager.GetComponentId)).First();
+            return Components[key];
         }
 
         /// <summary>
@@ -109,7 +123,7 @@ namespace game.EntityComponent
             if(!HasComponent(id))
                 throw new ArgumentException("Entity does not contain a component of given type");
 
-            return Components[id];
+            return GetComponent(ComponentManager.GetComponentType(id));
         }
     }
 }
