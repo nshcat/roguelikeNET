@@ -1,0 +1,18 @@
+[
+  {
+    "id" : "ActionUp",
+    "name" : "Move up",
+    "description" : "Move the character up",
+    "default_binding" : {
+    	"main_key" : "W"
+    }
+  },
+  {
+    "id" : "ActionDown",
+    "name" : "Move down",
+    "description" : "Move the character down",
+    "default_binding" : {
+    	"main_key" : "S"
+    }
+  }
+]

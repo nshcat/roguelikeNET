@@ -37,7 +37,7 @@ namespace game.Ascii
         {
             get;
             set;
-        }
+        } = new List<Key>();
 
         /// <summary>
         /// Construct new key binding instance from given keys.
@@ -48,6 +48,15 @@ namespace game.Ascii
         {
             MainKey = key;
             Modifiers = modifiers;
+        }
+        
+        /// <summary>
+        /// Construct new key binding instance from given key with no modifiers.
+        /// </summary>
+        /// <param name="key">Main key</param>
+        public KeyBinding(Key key)
+        {
+            MainKey = key;
         }
 
         /// <summary>
@@ -247,6 +256,34 @@ namespace game.Ascii
             return HasInput(value.ToString());
         }
 
+        /// <summary>
+        /// Update a key binding
+        /// </summary>
+        /// <param name="input">Input action identifier to set key binding for</param>
+        /// <param name="kb">Key binding information</param>
+        /// <exception cref="ArgumentException">If the given input action is not known to this mapping</exception>
+        public void SetBinding(string input, KeyBinding kb)
+        {
+            if(!Schema.ContainsKey(input))
+                throw new ArgumentException("Unknown input action \"{0}\"", input);
+            
+            if (OverrideBindings.ContainsKey(input))
+                OverrideBindings[input] = kb;
+            else
+                OverrideBindings.Add(input, kb);       
+        }
+
+        /// <summary>
+        /// Update a key binding
+        /// </summary>
+        /// <param name="value">Input action identifier to set key binding for</param>
+        /// <param name="kb">Key binding information</param>
+        /// <exception cref="ArgumentException">If the given input action is not known to this mapping</exception>
+        public void SetBinding(Enum value, KeyBinding kb)
+        {
+            SetBinding(value.ToString(), kb);
+        }
+        
         /// <summary>
         /// Save all changes made to the bindings to the override key map file. This method
         /// automatically detects which bindings are redundant and ignores them.

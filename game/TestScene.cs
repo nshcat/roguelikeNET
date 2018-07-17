@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.IO;
 using game.Ascii;
 using game.Gui;
@@ -6,6 +7,12 @@ using game.Procedual;
 
 namespace game
 {
+    enum TestActions
+    {
+        ActionUp,
+        ActionDown
+    }
+    
     // TODO: Create class that can use N points.
     // Provide method "SampleIncrement" that gives the increment that will lead
     // to good result when drawing. Could add up distance between the points (p0->p1, p1-> ... -> pn-1, pn-1 -> pn)
@@ -21,6 +28,8 @@ namespace game
         private bool hasSpawned;
         private TaskProgress prog = new TaskProgress("Starting generator", 0, 1, false);
         private ImageOutput outImg = new ImageOutput(Paths.UserDirectory);
+
+        private InputMapper testMapping = new InputMapper("test");
 
         public TestScene()
         {
@@ -48,12 +57,20 @@ namespace game
             };
             
             Console.WriteLine($"x.B: {x.B}, x.A: {x.A}");
+           
+            testMapping.SetBinding("ActionDown", new KeyBinding(Key.J));
         }
         
         int selection = 0;
         
         public void update(long elapsedTicks)
         {
+            if(testMapping.HasInput(TestActions.ActionUp))
+                Logger.postMessage(SeverityLevel.Debug, "InputTest", "\"ActionUp\" was pressed");
+            
+            if(testMapping.HasInput(TestActions.ActionDown))
+                Logger.postMessage(SeverityLevel.Debug, "InputTest", "\"ActionDown\" was pressed");
+            
             if (Input.hasKey(Key.Enter) && !hasSpawned)
             {
                 new MapGenerator(p => this.prog = p, new Dimensions(1500U, 1500U), new Random().Next(), outImg).Run();
