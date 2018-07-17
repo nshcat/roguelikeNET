@@ -27,6 +27,9 @@ namespace game.AutoJson
         
         public static T Deserialize<T>(JObject t)
         {
+            if(typeof(T).GetConstructor(Type.EmptyTypes) == null)
+                throw new ArgumentException("Type needs to provide a parameterless constructor in order to be deserialized");
+            
             return (T) Deserialize(Activator.CreateInstance<T>(), typeof(T), t);
         }
 
@@ -131,6 +134,14 @@ namespace game.AutoJson
                     throw new ArgumentException(string.Format("JToken needs to be object to allow deserialization of \"{0}\"", t));
 
                 return Deserialize(Activator.CreateInstance(t), t, (JObject)elem);
+            }
+            else if(t.IsEnum) // Enumeration
+            {
+                // Retrieve as string value
+                if(elem.Type != JTokenType.String)
+                    throw new ArgumentException("Expected a string value in order to deserialize enumeration");
+
+                return Enum.Parse(t, (elem as JValue).Value<string>());
             }
             else
             {

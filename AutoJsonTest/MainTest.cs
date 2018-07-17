@@ -47,6 +47,118 @@ namespace AutoJsonTest
             set;
         }
     }
+
+    public enum TestEnum
+    {
+        Miau,
+        Nyan
+    }
+
+    [game.AutoJson.Serializable]
+    [Deserializable]
+    public class Test3
+    {
+        public Test3(int nyan)
+        {
+            Nyan = nyan;
+        }
+
+        public Test3()
+        {
+            
+        }
+
+        [Key("nyan")]
+        public int Nyan { get; set; }
+
+        protected bool Equals(Test3 other)
+        {
+            return Nyan == other.Nyan;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Test3) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Nyan;
+        }
+
+        public static bool operator ==(Test3 left, Test3 right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Test3 left, Test3 right)
+        {
+            return !Equals(left, right);
+        }
+    }
+    
+    [game.AutoJson.Serializable]
+    [Deserializable]
+    public class Test2
+    {
+        [Key("foo")]
+        public TestEnum Foo { get; set; }
+        
+        [Key("bar")]
+        public int Bar { get; set; }
+        
+        [Key("kitten")]
+        public Test3 Kitten { get; set; }
+
+        public Test2()
+        {
+            
+        }
+
+        public Test2(TestEnum foo, int bar, Test3 kitten)
+        {
+            Foo = foo;
+            Bar = bar;
+            Kitten = kitten;
+        }
+
+        protected bool Equals(Test2 other)
+        {
+            return Foo == other.Foo && Bar == other.Bar && Equals(Kitten, other.Kitten);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Test2) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (int) Foo;
+                hashCode = (hashCode * 397) ^ Bar;
+                hashCode = (hashCode * 397) ^ (Kitten != null ? Kitten.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+        public static bool operator ==(Test2 left, Test2 right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Test2 left, Test2 right)
+        {
+            return !Equals(left, right);
+        }
+    }
     
     [Deserializable]
     public class Foobar
@@ -111,6 +223,18 @@ namespace AutoJsonTest
             Populate(instance, src);
             
             Assert.Equal(1337, instance.Chirp);
+        }
+
+        [Fact]
+        public void TestSerialize()
+        {
+            var element = new Test2(TestEnum.Nyan, 1337, new Test3(42));
+
+            var json = JsonWriter.Serialize(element);
+
+            var result = JsonLoader.Deserialize<Test2>(json);
+            
+            Assert.Equal(element, result);
         }
 
         private void Populate<T>(T instance, string src)

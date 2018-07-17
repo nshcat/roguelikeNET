@@ -3,6 +3,12 @@
 namespace game.AutoJson
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+    public class Serializable : Attribute
+    {
+        
+    }
+    
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public class Deserializable : Attribute
     {
         
