@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Xunit;
 using game.AutoJson;
 using Newtonsoft.Json.Linq;
@@ -234,7 +235,11 @@ namespace AutoJsonTest
 
             var result = JsonLoader.Deserialize<Test2>(json);
             
+            Console.WriteLine(json.ToString());
+            
             Assert.Equal(element, result);
+            
+            File.WriteAllText("test_out", json.ToString());
         }
 
         private void Populate<T>(T instance, string src)
