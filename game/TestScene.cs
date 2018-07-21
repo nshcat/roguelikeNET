@@ -27,7 +27,6 @@ namespace game
 
         private bool hasSpawned;
         private TaskProgress prog = new TaskProgress("Starting generator", 0, 1, false);
-        private ImageOutput outImg = new ImageOutput(Paths.UserDirectory);
 
         private InputMapper testMapping = new InputMapper("test");
 
@@ -73,7 +72,7 @@ namespace game
             
             if (Input.hasKey(Key.Enter) && !hasSpawned)
             {
-                new MapGenerator(p => this.prog = p, new Dimensions(1500U, 1500U), new Random().Next(), outImg).Run();
+                //new MapGenerator(p => this.prog = p, new Dimensions(1500U, 1500U), new Random().Next(), outImg).Run();
                 //new TestBackgroundTask(p => this.prog = p).Run();
                 hasSpawned = true;
             }
