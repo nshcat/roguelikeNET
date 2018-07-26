@@ -75,7 +75,7 @@ namespace game.Ascii
                     if (key == null || tile != key)
                     {
                         // Draw tile to screen
-                        Screen.setTile(new Position(ix, iy) + p, data[iy, ix]);
+                        Screen.SetTile(new Position(ix, iy) + p, data[iy, ix]);
                     }     
                 }
             }

@@ -134,7 +134,7 @@ namespace game
         {
             g.Render();
             
-            Screen.drawString(new Position(20, 0), selection.ToString(), Color.White, Color.Black);
+            Screen.DrawString(new Position(20, 0), selection.ToString(), Color.White, Color.Black);
             
             /*for (uint iy = 0; iy < Screen.Height; ++iy)
             {
@@ -178,16 +178,16 @@ namespace game
                 
                 double percent = ((double) prog.CurrentPhase) / (double) prog.TotalPhases;
                 
-                Screen.drawWindow(new Position(0U, 0U), new Dimensions(44u, 10U), "Generating map", fg, bg, true);
+                Screen.DrawWindow(new Position(0U, 0U), new Dimensions(44u, 10U), "Generating map", fg, bg, true);
                 
-                Screen.drawString(new Position(2U, 2U), "> " + prog.Message + "..", fg, bg);
+                Screen.DrawString(new Position(2U, 2U), "> " + prog.Message + "..", fg, bg);
                 
-                Screen.drawProgressBar(new Position(2U, 4U), 33, percent, fg, bg);
+                Screen.DrawProgressBar(new Position(2U, 4U), 33, percent, fg, bg);
                 
-                Screen.drawString(new Position(2U + 33U + 2U + 1U, 4U), (((int)(percent * 100)) + "%").PadLeft(4), fg, bg);
+                Screen.DrawString(new Position(2U + 33U + 2U + 1U, 4U), (((int)(percent * 100)) + "%").PadLeft(4), fg, bg);
                 
-                Screen.drawString(new Position(33U, 7U), "c", Color.Green, bg);
-                Screen.drawString(new Position(33U + 1U, 7U), ": cancel", fg, bg);
+                Screen.DrawString(new Position(33U, 7U), "c", Color.Green, bg);
+                Screen.DrawString(new Position(33U + 1U, 7U), ": cancel", fg, bg);
                 /*for (int i = 0; i < prog.Message.Length; ++i)
                 {
                     Screen.setTile(new Position((uint) (0 + i), 0),

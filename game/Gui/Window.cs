@@ -17,7 +17,7 @@ namespace game.Gui
 
         public override void Render()
         {
-            Screen.drawWindow(position, dimensions, title, front, back, true);
+            Screen.DrawWindow(position, dimensions, title, front, back, true);
         }
 
         public override Dimensions SurfaceDimensions()

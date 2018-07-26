@@ -17,7 +17,7 @@ namespace game.Gui
 
         public override void Render(Container c, GuiStyle s)
         {
-            Screen.drawString(position, text, front, c.Back);
+            Screen.DrawString(position, text, front, c.Back);
         }
     }
 }

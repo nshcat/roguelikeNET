@@ -47,9 +47,9 @@ namespace game.Gui
 
                 var buttonText = text.Substring(0, Math.Min(width, text.Length)).PadBoth(width);
                 
-                Screen.drawString(position, prefix, fg, bg);
-                Screen.drawString(position + new Position(prefix.Length, 0), buttonText, style.InvertedForeground, bg);
-                Screen.drawString(position + new Position(prefix.Length + buttonText.Length, 0), postfix, fg, bg);
+                Screen.DrawString(position, prefix, fg, bg);
+                Screen.DrawString(position + new Position(prefix.Length, 0), buttonText, style.InvertedForeground, bg);
+                Screen.DrawString(position + new Position(prefix.Length + buttonText.Length, 0), postfix, fg, bg);
             }
             else // Normal case, everything is colored in the same way
             {         
@@ -57,7 +57,7 @@ namespace game.Gui
                     text.Substring(0, Math.Min(width, text.Length)).PadBoth(width));
 
                 // Center text and draw to screen
-                Screen.drawString(position, buttonText, fg, bg);
+                Screen.DrawString(position, buttonText, fg, bg);
             }
         }
     }

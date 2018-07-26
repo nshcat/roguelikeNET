@@ -49,14 +49,14 @@ namespace game.Gui
             
             var str = text.Substring(0, Math.Min(textWidth, text.Length)).PadRight(textWidth);
             
-            Screen.drawString(position, str, fg, bg);
+            Screen.DrawString(position, str, fg, bg);
 
             var valStr = currentValue.ToString();
             var valStrCropped = valStr.Substring(0, Math.Min(valueWidth, valStr.Length)).PadLeft(valueWidth);
 
             var valStrComplete = $"<{valStrCropped}>";
             
-            Screen.drawString(position + new Position(textWidth + 1, 0),valStrComplete, front, c.Back);
+            Screen.DrawString(position + new Position(textWidth + 1, 0),valStrComplete, front, c.Back);
         }
     }
 }

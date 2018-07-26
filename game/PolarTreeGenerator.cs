@@ -105,13 +105,13 @@ namespace game
                     {
                         var pos = Position.FromVector(new Vector(ix, iy) + Vector.FromPosition(center));
                         
-                        Screen.setTile(pos, tile);
+                        Screen.SetTile(pos, tile);
                     }
 
                 }
             }
             
-            Screen.setTile(center, centerTile);
+            Screen.SetTile(center, centerTile);
         }
     }
 }

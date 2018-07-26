@@ -69,7 +69,7 @@ namespace game
                 Input.end();
 
                 RenderContext.beginFrame();
-                Screen.clear();
+                Screen.Clear();
                 CurrentScene.render();
                 Renderer.render();
                 RenderContext.endFrame();

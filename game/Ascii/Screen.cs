@@ -10,16 +10,16 @@ namespace game.Ascii
 {
     public static class Screen
     {
-        public static Dimensions Dimensions => getDimensions();
+        public static Dimensions Dimensions => GetDimensions();
         public static uint Width => Dimensions.X;
         public static uint Height => Dimensions.Y;
         
-        public static void clear()
+        public static void Clear()
         {
             Native.ScreenNative.screen_clear();
         }
 
-        public static void clearTile(Position p)
+        public static void ClearTile(Position p)
         {
             if (Renderer.IsBatchMode)
                 Renderer.enqueueCommand(RenderCommand.ClearTileCommand(p));
@@ -27,7 +27,7 @@ namespace game.Ascii
                 Native.ScreenNative.screen_clear_tile(ref p);
         }
 
-        public static void setTile(Position p, Tile t)
+        public static void SetTile(Position p, Tile t)
         {
             if (Renderer.IsBatchMode)
             {
@@ -45,7 +45,7 @@ namespace game.Ascii
             }
         }
 
-        public static void setDepth(Position p, byte d)
+        public static void SetDepth(Position p, byte d)
         {
             if(d > 255)
                 throw new ArgumentException("Depth argument out of range [0, 255]");
@@ -56,7 +56,7 @@ namespace game.Ascii
                 Native.ScreenNative.screen_set_depth(ref p, d);
         }
 
-        private static Dimensions getDimensions()
+        private static Dimensions GetDimensions()
         {
             var d = new Dimensions();
             
@@ -73,7 +73,7 @@ namespace game.Ascii
         /// <param name="s">String to draw</param>
         /// <param name="fg">Foreground color</param>
         /// <param name="bg">Background color</param>
-        public static void drawString(Position p, string s, Color fg, Color bg)
+        public static void DrawString(Position p, string s, Color fg, Color bg)
         {
             for (uint ix = 0; ix < s.Length; ++ix)
             {
@@ -81,11 +81,11 @@ namespace game.Ascii
                 if (p.X + ix >= Dimensions.X)
                     break;
                 
-                setTile(new Position(p.X + ix, p.Y), new Tile(bg, fg, (byte)s[(int)ix]));
+                SetTile(new Position(p.X + ix, p.Y), new Tile(bg, fg, (byte)s[(int)ix]));
             }
         }
 
-        public static void drawWindow(Position p, Dimensions d, string title, Color fg, Color bg, bool filled)
+        public static void DrawWindow(Position p, Dimensions d, string title, Color fg, Color bg, bool filled)
         {
             var background = new Tile(bg, bg, 0);
             var horzBorder = new Tile(bg, fg, 196);
@@ -99,14 +99,14 @@ namespace game.Ascii
                 {
                     for (uint ix = p.X; ix < p.X + d.X; ++ix)
                     {
-                        setTile(new Position(ix, iy), horzBorder);
+                        SetTile(new Position(ix, iy), horzBorder);
                     }
                 }
                 else
                 {
                     // Set vertical border segments at both sides of the window
-                    setTile(new Position(p.X, iy), vertBorder);
-                    setTile(new Position(p.X + d.X - 1, iy), vertBorder);
+                    SetTile(new Position(p.X, iy), vertBorder);
+                    SetTile(new Position(p.X + d.X - 1, iy), vertBorder);
                     
                     // Fill the inner portion of this vertical slice of the window
                     // with the background color if requested by the caller
@@ -114,21 +114,21 @@ namespace game.Ascii
                     {
                         for (uint ix = p.X + 1; ix < p.X + d.X - 1; ++ix)
                         {
-                            setTile(new Position(ix, iy), background);
+                            SetTile(new Position(ix, iy), background);
                         }
                     }                
                 }
             }
             
             // Draw corners
-            setTile(p, new Tile(bg, fg, 218));
-            setTile(new Position(p.X + d.X - 1, p.Y), new Tile(bg, fg, 191));
-            setTile(new Position(p.X, p.Y + d.Y - 1), new Tile(bg, fg, 192));
-            setTile(new Position(p.X + d.X - 1, p.Y + d.Y - 1), new Tile(bg, fg, 217));
+            SetTile(p, new Tile(bg, fg, 218));
+            SetTile(new Position(p.X + d.X - 1, p.Y), new Tile(bg, fg, 191));
+            SetTile(new Position(p.X, p.Y + d.Y - 1), new Tile(bg, fg, 192));
+            SetTile(new Position(p.X + d.X - 1, p.Y + d.Y - 1), new Tile(bg, fg, 217));
             
             // Draw the window title
             var str = (char)180 + title + (char)195;
-            drawString(new Position(p.X + 1, p.Y), str, fg, bg);
+            DrawString(new Position(p.X + 1, p.Y), str, fg, bg);
         }
 
         
@@ -140,7 +140,7 @@ namespace game.Ascii
         /// <param name="currentValue">Current value of the progress bar in percent, stored as [0, 1]</param>
         /// <param name="fg"></param>
         /// <param name="bg"></param>
-        public static void drawProgressBar(Position p, uint segmentCount, double currentValue, Color fg, Color bg)
+        public static void DrawProgressBar(Position p, uint segmentCount, double currentValue, Color fg, Color bg)
         {
             var filledSegment = new Tile(bg, fg, 219);
             var halfFilledSegment = new Tile(bg, fg, 221);
@@ -151,7 +151,7 @@ namespace game.Ascii
             // This applies floor() to the value
             var filledCount = (uint) (currentValue * segmentCount);
             for(uint ix = 0; ix < filledCount; ++ix)
-                setTile(new Position(p.X + 1U + ix, p.Y), filledSegment);
+                SetTile(new Position(p.X + 1U + ix, p.Y), filledSegment);
 
             // Draw half-filled segment
             //var x = floatNumber - Math.Truncate(floatNumber);
@@ -161,19 +161,19 @@ namespace game.Ascii
 
             if (fraction >= 0.5)
             {
-                setTile(new Position(p.X + 1U + filledCount, p.Y), halfFilledSegment);
+                SetTile(new Position(p.X + 1U + filledCount, p.Y), halfFilledSegment);
                 drewHalfSegment = true;
             }
 
             // Draw empty segments
             for (uint ix = (drewHalfSegment ? 1U : 0U) + filledCount; ix < segmentCount; ++ix)
             {
-                setTile(new Position(p.X + 1U + ix, p.Y), emptySegment);
+                SetTile(new Position(p.X + 1U + ix, p.Y), emptySegment);
             }
             
             // Draw border
-            setTile(p, new Tile(bg, fg, 179));
-            setTile(new Position(p.X + segmentCount + 1, p.Y), new Tile(bg, fg, 179));
+            SetTile(p, new Tile(bg, fg, 179));
+            SetTile(new Position(p.X + segmentCount + 1, p.Y), new Tile(bg, fg, 179));
         }
     }
 }
