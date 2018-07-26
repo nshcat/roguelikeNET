@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace game.Ascii.Native
 {
@@ -17,6 +18,12 @@ namespace game.Ascii.Native
         [FieldOffset(12)]
         private byte value;
 
+        [FieldOffset(12)]
+        private UInt32 integralValue;
+
+        [FieldOffset(12)]
+        private bool flag;
+
         public RenderCommand(RenderCommandType t, Position p)
         {
             this.type = t;
@@ -24,6 +31,8 @@ namespace game.Ascii.Native
 
             color = Color.White;
             value = 0;
+            integralValue = 0;
+            flag = false;
         }
         
 
@@ -49,6 +58,34 @@ namespace game.Ascii.Native
         {
             get => value;
             set => this.value = value;
+        }
+
+        public uint IntegralValue
+        {
+            get => integralValue;
+            set => integralValue = value;
+        }
+
+        public bool Flag
+        {
+            get => flag;
+            set => flag = value;
+        }
+
+        public static RenderCommand SetLightingModeCommand(Position p, LightingMode m)
+        {
+            return new RenderCommand(RenderCommandType.SetLightMode, p)
+            {
+                IntegralValue = (UInt32)m
+            };
+        }
+        
+        public static RenderCommand SetGuiModeCommand(Position p, bool b)
+        {
+            return new RenderCommand(RenderCommandType.SetGuiMode, p)
+            {
+                Flag = b
+            };
         }
 
         public static RenderCommand ClearTileCommand(Position p)

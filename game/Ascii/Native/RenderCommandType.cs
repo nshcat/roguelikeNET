@@ -10,6 +10,8 @@
         SetBackground,
         SetForeground,
         SetDepth,
-        ClearTile
+        ClearTile,
+        SetGuiMode,
+        SetLightMode
     }
 }
