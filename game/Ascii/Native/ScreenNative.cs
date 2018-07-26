@@ -18,6 +18,12 @@ namespace game.Ascii.Native
         
         [DllImport("libascii")]
         public static extern void screen_set_depth(ref Position p, byte d);
+        
+        [DllImport("libascii")]
+        public static extern void screen_set_light_mode(ref Position p, LightingMode d);
+        
+        [DllImport("libascii")]
+        public static extern void screen_set_gui_mode(ref Position p, bool f);
 
         [DllImport("libascii")]
         public static extern void screen_apply_commands(RenderCommand[] cmdbuf, int count);
