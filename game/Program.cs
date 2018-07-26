@@ -57,7 +57,7 @@ namespace game
 
             var r2 = EntityManager.GetEntities<BaseComponent>().ToList();
             
-            Renderer.IsBatchMode = true;
+            Renderer.IsBatchMode = false;
             
             CurrentScene = new TestScene();//GUIExampleScene();
             

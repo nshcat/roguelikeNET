@@ -16,13 +16,7 @@ namespace game.Ascii.Native
         private Color color;
         
         [FieldOffset(12)]
-        private byte value;
-
-        [FieldOffset(12)]
-        private UInt32 integralValue;
-
-        [FieldOffset(12)]
-        private bool flag;
+        private UInt32 value;
 
         public RenderCommand(RenderCommandType t, Position p)
         {
@@ -31,8 +25,6 @@ namespace game.Ascii.Native
 
             color = Color.White;
             value = 0;
-            integralValue = 0;
-            flag = false;
         }
         
 
@@ -54,29 +46,18 @@ namespace game.Ascii.Native
             set => color = value;
         }
 
-        public byte Value
+        public uint Value
         {
             get => value;
             set => this.value = value;
         }
 
-        public uint IntegralValue
-        {
-            get => integralValue;
-            set => integralValue = value;
-        }
-
-        public bool Flag
-        {
-            get => flag;
-            set => flag = value;
-        }
 
         public static RenderCommand SetLightingModeCommand(Position p, LightingMode m)
         {
             return new RenderCommand(RenderCommandType.SetLightMode, p)
             {
-                IntegralValue = (UInt32)m
+                Value = (UInt32)m
             };
         }
         
@@ -84,7 +65,7 @@ namespace game.Ascii.Native
         {
             return new RenderCommand(RenderCommandType.SetGuiMode, p)
             {
-                Flag = b
+                Value = b ? 1U : 0U
             };
         }
 

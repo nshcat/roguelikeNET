@@ -25,13 +25,11 @@ namespace game.Ascii
         /// <summary>
         /// Construct new light info instance
         /// </summary>
-        /// <param name="position">Position</param>
         /// <param name="intensity">Base intensity</param>
         /// <param name="color">Base color</param>
         /// <param name="attenuation">Attenuation information</param>
-        public Light(Position position, float intensity, Color color, LightAttenuation attenuation) : this()
+        public Light(float intensity, Color color, LightAttenuation attenuation) : this()
         {
-            this.position = position;
             this.intensity = intensity;
             this.attenuation = attenuation;
             
@@ -85,7 +83,10 @@ namespace game.Ascii
         /// <returns>Deep copy if this instance</returns>
         public object Clone()
         {
-            return new Light(Position, Intensity, Color, (LightAttenuation) Attenuation.Clone());
+            return new Light(Intensity, Color, (LightAttenuation) Attenuation.Clone())
+            {
+                Position = this.Position
+            };
         }
 
         /// <summary>

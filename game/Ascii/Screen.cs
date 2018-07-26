@@ -13,10 +13,24 @@ namespace game.Ascii
         public static Dimensions Dimensions => GetDimensions();
         public static uint Width => Dimensions.X;
         public static uint Height => Dimensions.Y;
+
+        /// <summary>
+        /// Collection of all lights currently known to the renderer
+        /// </summary>
+        private static List<UInt64> LightHandles
+        {
+            get;
+            set;
+        } = new List<UInt64>();
         
         public static void Clear()
         {
+            // Clear the screen
             Native.ScreenNative.screen_clear();
+            
+            // Destroy all lights
+            foreach(var lightHandle in LightHandles)
+                Native.LightingNative.lighting_destroy_light(lightHandle);
         }
 
         public static void ClearTile(Position p)
@@ -25,6 +39,34 @@ namespace game.Ascii
                 Renderer.enqueueCommand(RenderCommand.ClearTileCommand(p));
             else
                 Native.ScreenNative.screen_clear_tile(ref p);
+        }
+
+        public static void CreateLight(Position p, Light l)
+        {
+            // Check for space
+            if(!Native.LightingNative.lighting_has_space(1))
+                Logger.postMessage(SeverityLevel.Warning, "Screen", "Not enough slots left to create new light");
+            else
+            {
+                l.Position = p;
+                LightHandles.Add(Native.LightingNative.lighting_create_light(ref l));
+            }        
+        }
+
+        public static void SetLightingMode(Position p, LightingMode lm)
+        {
+            if (Renderer.IsBatchMode)
+                Renderer.enqueueCommand(RenderCommand.SetLightingModeCommand(p, lm));
+            else
+                Native.ScreenNative.screen_set_light_mode(ref p, lm);
+        }
+        
+        public static void SetGuiMode(Position p, bool f)
+        {
+            if (Renderer.IsBatchMode)
+                Renderer.enqueueCommand(RenderCommand.SetGuiModeCommand(p, f));
+            else
+                Native.ScreenNative.screen_set_gui_mode(ref p, f);
         }
 
         public static void SetTile(Position p, Tile t)
