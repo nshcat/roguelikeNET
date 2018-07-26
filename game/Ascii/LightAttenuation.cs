@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 
 namespace game.Ascii
@@ -30,36 +29,36 @@ namespace game.Ascii
         /// The attenuation factors.
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        private float[] _attenFactors;
+        private float[] attenFactors;
         
         /// <summary>
         /// The radius of the light.
         /// </summary>
-        private float _radius;
+        private float radius;
 
         /// <summary>
         /// Flag telling the renderer whether the radius or the explicit attenuation factors
-        /// should be used
+        /// should be used to calculate light intensity falloff
         /// </summary>
         /// <remarks>
         /// Note that the type choice here is intentional, boolean values on the GPU are 32bits wide, and the
         /// C equivalent of this struct is supposed to be directly mappable into GPU memory, and therefore follows
         /// this convention.
         /// </remarks>
-        private UInt32 _useRadius;
+        private UInt32 useRadius;
 
         /// <summary>
         /// Create new light attenuation instance from given radius
         /// </summary>
         /// <param name="radius">Radius of the light</param>
         /// <returns>Light attenuation instance describing given radius</returns>
-        public static LightAttenuation FromRadius(float radius)
+        public static LightAttenuation FromRadius(float r)
         {
             return new LightAttenuation
             {
-                _radius = radius,
-                _useRadius = 1,
-                _attenFactors = new float[3]
+                radius = r,
+                useRadius = 1,
+                attenFactors = new float[3]
             };
         }
         
@@ -77,11 +76,11 @@ namespace game.Ascii
             
             var att = new LightAttenuation()
             {
-                _useRadius = 0,
-                _attenFactors = new float[3]
+                useRadius = 0,
+                attenFactors = new float[3]
             };
             
-            factors.CopyTo(att._attenFactors, 0);
+            factors.CopyTo(att.attenFactors, 0);
 
             return att;
         } 
@@ -94,12 +93,12 @@ namespace game.Ascii
         {
             var other = new LightAttenuation()
             {
-                _radius = this._radius,
-                _useRadius = this._useRadius,
-                _attenFactors = new float[3]
+                radius = this.radius,
+                useRadius = this.useRadius,
+                attenFactors = new float[3]
             };
             
-            _attenFactors.CopyTo(other._attenFactors, 0);
+            attenFactors.CopyTo(other.attenFactors, 0);
 
             return other;
         }
