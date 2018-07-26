@@ -24,6 +24,15 @@ namespace game.Ascii
             checkRanges();
         }
 
+        public Color(float r, float g, float b)
+        {
+            this.r = (uint)r*255;
+            this.g = (uint)g*255;
+            this.b = (uint)b*255;
+            
+            checkRanges();
+        }
+        
         public uint R
         {
             get => r;
