@@ -25,14 +25,21 @@ namespace game.Ascii
         
         public static void Clear()
         {
-            // Clear the screen
+            // Clear the screen and set everything to gui mode
             Native.ScreenNative.screen_clear();
             
             // Destroy all lights
             foreach(var lightHandle in LightHandles)
                 Native.LightingNative.lighting_destroy_light(lightHandle);
+            
+            LightHandles.Clear();          
         }
 
+        public static void SetAmbientLight(Color c)
+        {
+            Native.LightingNative.lighting_set_ambient(ref c);
+        }
+        
         public static void ClearTile(Position p)
         {
             if (Renderer.IsBatchMode)

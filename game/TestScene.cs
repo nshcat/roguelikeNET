@@ -24,6 +24,9 @@ namespace game
         private Color clr = Color.Black;
         private TileImage img;
         private Gui.Gui g = new Gui.Gui();
+        
+        private Light l = new Light(0.7f, new Color(1.0f, 0.647f, 0.0f), LightAttenuation.FromRadius(3.5f));
+        private TickCounter cntr = new TickCounter(8);
 
         private bool hasSpawned;
         private TaskProgress prog = new TaskProgress("Starting generator", 0, 1, false);
@@ -43,27 +46,21 @@ namespace game
             p3 = new Position(26, 6);
 
             img = TileImageLoader.LoadImage("test");
-
-            var y = new CtorTest
-            {
-                A = 0,
-                B = 0
-            };
-            
-            var x = new CtorTest(y)
-            {
-                B = 3
-            };
-            
-            Console.WriteLine($"x.B: {x.B}, x.A: {x.A}");
            
             testMapping.SetBinding("ActionDown", new KeyBinding(Key.J));
         }
         
         int selection = 0;
         
+        Random rnd = new Random();
+        
         public void update(long elapsedTicks)
         {
+            if (cntr.UpdateSimple(elapsedTicks))
+            {
+                l.Intensity = 0.7f * ((float) rnd.NextDouble() / 2.0f) + 0.5f;
+            }
+
             if(testMapping.HasInput(TestActions.ActionUp))
                 Logger.postMessage(SeverityLevel.Debug, "InputTest", "\"ActionUp\" was pressed");
             
@@ -132,6 +129,23 @@ namespace game
 
         public void render()
         {
+            //Screen.SetAmbientLight(new Color(255, 255, 255));
+            
+            var tl = new Position(20, 5);
+            for (int y = 0; y < 10; ++y)
+            {
+                for (int x = 0; x < 10; ++x)
+                {
+                    var pos = new Position(x, y) + tl;
+                    
+                    Screen.SetTile(pos, new Tile(new Color(130, 130, 130), Color.White, 0));
+                    Screen.SetLightingMode(pos, LightingMode.Full);
+                    Screen.SetGuiMode(pos, false);
+                }
+            }
+            
+            Screen.CreateLight(new Position(5, 5) + tl, l);
+            
             g.Render();
             
             Screen.DrawString(new Position(20, 0), selection.ToString(), Color.White, Color.Black);

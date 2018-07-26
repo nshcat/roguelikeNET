@@ -13,5 +13,8 @@ namespace game.Ascii.Native
         
         [DllImport("libascii")]
         public static extern bool lighting_has_space(int count);
+
+        [DllImport("libascii")]
+        public static extern void lighting_set_ambient(ref Color c);
     }
 }
