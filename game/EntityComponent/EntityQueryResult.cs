@@ -10,6 +10,15 @@ namespace game.EntityComponent
     /// A class representing the result of a entity query, for example a filter operation
     /// for a specific component type. It allows chained queries.
     /// </summary>
+    /// <remarks>
+    /// Most filter operations offered by this class do copy the collection instead of using
+    /// the lightweight references the LINQ queries create. This is because a common use case is
+    /// to call <see cref="EntityManager.Destroy"/> or <see cref="EntityManager.Construct"/>
+    /// in system operation, which would create problems when systems iterate over their
+    /// entity sets, since modifying a currently enumerated collection is not allowed and
+    /// the results would directly reference the global entity collection managed by
+    /// <see cref="EntityManager"/>.
+    /// </remarks>
     public class EntityQueryResult : IEnumerable<Entity>
     {
         /// <summary>
@@ -39,7 +48,8 @@ namespace game.EntityComponent
         public EntityQueryResult GetEntities(IEntityFilter filter)
         {
             var result = Result
-                .Where(x => filter.Apply(x));
+                .Where(x => filter.Apply(x))
+                .ToList();
             
             return new EntityQueryResult(result);
         }
@@ -53,7 +63,8 @@ namespace game.EntityComponent
         {
             var result = Result
                 .Where(x => filters
-                    .All(y => y.Apply(x)));
+                    .All(y => y.Apply(x)))
+                .ToList();
             
             return new EntityQueryResult(result);
         }
