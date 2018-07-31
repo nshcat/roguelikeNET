@@ -26,7 +26,7 @@ namespace game
 
         public void run(string[] args)
         {
-            Engine.initialize(new GameInfo("dragonhoard", "0.0.1", "libascii test"), args);
+            Engine.Initialize(new GameInfo("dragonhoard", "0.0.1", "libascii test", "dragonhoard"), args);
             
             EntityComponent.EntityManager.Initialize();
             var entity = EntityComponent.EntityManager.Construct("cat");

@@ -20,7 +20,7 @@ namespace game.Ascii
             };
         
         
-        private static Native.EntryType getEntryType<T>()
+        private static Native.EntryType GetEntryType<T>()
         {
             if (TypeMap.ContainsKey(typeof(T)))
             {
@@ -33,9 +33,9 @@ namespace game.Ascii
             }
         }
 
-        private static Object unpackValue<T>(IntPtr p)
+        private static Object UnpackValue<T>(IntPtr p)
         {
-            var type = getEntryType<T>();
+            var type = GetEntryType<T>();
 
             switch (type)
             {
@@ -68,11 +68,11 @@ namespace game.Ascii
 
         }
         
-        public static T getValue<T>(string path)
+        public static T GetValue<T>(string path)
         {
-            var valPtr = Native.ConfigurationNative.configuration_get(getEntryType<T>(), path);
+            var valPtr = Native.ConfigurationNative.configuration_get(GetEntryType<T>(), path);
 
-            return (T)unpackValue<T>(valPtr);
+            return (T)UnpackValue<T>(valPtr);
         }
     }
 }

@@ -2,6 +2,9 @@
 
 namespace game.Ascii
 {
+    /// <summary>
+    /// A structure that is used to send information about the game to libascii.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct GameInfo
     {
@@ -13,6 +16,9 @@ namespace game.Ascii
         
         [MarshalAs(UnmanagedType.LPStr)]
         private string description;
+        
+        [MarshalAs(UnmanagedType.LPStr)]
+        private string windowTitle;
 
         public string Name
         {
@@ -32,11 +38,18 @@ namespace game.Ascii
             set => description = value;
         }
 
-        public GameInfo(string name, string version, string description)
+        public string WindowTitle
+        {
+            get => windowTitle;
+            set => windowTitle = value;
+        }
+
+        public GameInfo(string name, string version, string description, string windowTitle)
         {
             this.name = name;
             this.version = version;
             this.description = description;
+            this.windowTitle = windowTitle;
         }
     }
 }

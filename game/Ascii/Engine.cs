@@ -9,7 +9,7 @@ namespace game.Ascii
         /// </summary>
         /// <param name="info">Information about the game</param>
         /// <param name="args">Command line arguments</param>
-        public static void initialize(GameInfo info, string[] args)
+        public static void Initialize(GameInfo info, string[] args)
         {
             // The native library expects the program name to be the first entry in argv,
             // like its convention in C.
