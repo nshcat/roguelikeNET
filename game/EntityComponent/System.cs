@@ -29,7 +29,12 @@ namespace game.EntityComponent
         {
             get;
             protected set;
-        } = new List<IEntityFilter>();
+        }
+
+        public System(IEnumerable<IEntityFilter> filters)
+        {
+            Filters = filters;
+        }
 
         /// <summary>
         /// Update system state. This causes the implementation of <see cref="Update(long, EntityQueryResult)"/> to
