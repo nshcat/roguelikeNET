@@ -58,6 +58,7 @@ namespace game.EntityComponent
         /// <param name="predicate">Predicate operating on component instance</param>
         /// <typeparam name="T">Type of the component to filter by</typeparam>
         /// <returns>Collection of entities as result of filter operation</returns>
+        [Obsolete("Please perform queries on AllEntities")]
         public static IEnumerable<Entity> GetEntities<T>(Func<T, bool> predicate) where T : class, IComponent
         {
             return Entities
@@ -72,6 +73,7 @@ namespace game.EntityComponent
         /// </summary>
         /// <typeparam name="T">Type of the component to filter by</typeparam>
         /// <returns>Collection of entities as result of filter operation</returns>
+        [Obsolete("Please perform queries on AllEntities")]
         public static IEnumerable<Entity> GetEntities<T>() where T : class, IComponent
         {
             return GetEntities<T>(_ => true);
