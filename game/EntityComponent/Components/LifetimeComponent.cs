@@ -20,7 +20,7 @@ namespace game.EntityComponent.Components
         public int MaximumLifetime
         {
             get;
-            protected set;
+            set;
         }
         
         public Type ComponentType()

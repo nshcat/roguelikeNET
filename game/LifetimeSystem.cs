@@ -24,6 +24,9 @@ namespace game
         {          
             foreach(var (entity, component) in entities.GetPairs<LifetimeComponent>())
             {
+                if(component.MaximumLifetime <= 50)
+                    entity.ReplaceComponent(new LifetimeComponent{ MaximumLifetime = 300 });
+                
                 if (component.CurrentLifetime >= component.MaximumLifetime)
                 {
                     EntityManager.Destroy(entity.UniqueID);
