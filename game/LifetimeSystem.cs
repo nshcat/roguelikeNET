@@ -14,7 +14,7 @@ namespace game
     {
         public LifetimeSystem()
             : base(new List<IEntityFilter> {
-                EntityFilter<LifetimeComponent>.ByComponent()             
+                EntityFilter<LifetimeComponent>.ByComponent()
             })
         {
             
@@ -22,18 +22,18 @@ namespace game
         
         protected override void Update(long elapsedTicks, EntityQueryResult entities)
         {          
-            var kvps = entities.Select(x => (x, x.GetComponent<LifetimeComponent>()));
-            
-            foreach(var (entity, component) in kvps)
+            foreach(var (entity, component) in entities.GetPairs<LifetimeComponent>())
             {
                 if (component.CurrentLifetime >= component.MaximumLifetime)
                 {
                     EntityManager.Destroy(entity.UniqueID);
-                    Logger.postMessage(SeverityLevel.Debug, "LifetimeSystem", $"Destroyed entity of type \"{entity.TypeName}\" because maximum lifetime was reached");
+                    
+                    Logger.postMessage(SeverityLevel.Debug,
+                        "LifetimeSystem", $"Destroyed entity of type \"{entity.TypeName}\" because maximum lifetime was reached");
                 }
                 else
                 {
-                    component.CurrentLifetime++;
+                    component.CurrentLifetime += (int)elapsedTicks;
                 }
             }
         }

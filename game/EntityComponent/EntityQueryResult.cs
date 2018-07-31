@@ -68,12 +68,34 @@ namespace game.EntityComponent
             
             return new EntityQueryResult(result);
         }
+
+        /// <summary>
+        /// Retrieve collection of pairs consisting of an entity and the component instance of given type
+        /// that is contained in that particular entity. This basically extracts the component instance,
+        /// while still retaining a reference to the entity it is associated with.
+        /// </summary>
+        /// <typeparam name="T">Type of component to extract. This has to be derived from <see cref="IComponent"/></typeparam>
+        /// <returns>Collection of pairs</returns>
+        /// <exception cref="ArgumentException">
+        /// If there exists at least one entity in this result that does not
+        /// contain a component instance of given type
+        /// </exception>
+        /// <remarks>
+        /// This is useful when systems want to work on component data, but still need access to e.g. the entity
+        /// GUID in order to delete it.
+        /// </remarks>
+        public IEnumerable<(Entity, T)> GetPairs<T>() where T : class, IComponent
+        {
+            return Result
+                    .Select(x => (x, x.GetComponent<T>()))
+                    .ToList();
+        }
         
         /// <summary>
         /// Get all entities that contain a component of given type that satisfies the given predicate
         /// </summary>
         /// <param name="predicate">Predicate operating on component instance</param>
-        /// <typeparam name="T">Type of the component to filter by</typeparam>
+        /// <typeparam name="T">Type of the component to filter by. This has to be derived from <see cref="IComponent"/></typeparam>
         /// <returns>Collection of entities as result of filter operation</returns>
         public EntityQueryResult GetEntities<T>(Func<T, bool> predicate) where T : class, IComponent
         {
@@ -88,7 +110,7 @@ namespace game.EntityComponent
         /// <summary>
         /// Get all entities that contain a component of given type
         /// </summary>
-        /// <typeparam name="T">Type of the component to filter by</typeparam>
+        /// <typeparam name="T">Type of the component to filter by. This has to be derived from <see cref="IComponent"/></typeparam>
         /// <returns>Collection of entities as result of filter operation</returns>
         public EntityQueryResult GetEntities<T>() where T : class, IComponent
         {
