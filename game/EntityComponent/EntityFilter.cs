@@ -69,5 +69,26 @@ namespace game.EntityComponent
         {
             return e.HasComponent<T>() && Predicate(e.GetComponent<T>());
         }
+
+        /// <summary>
+        /// Convenience static method that creates an entity filter that matches entities
+        /// that contain a component of given type.
+        /// </summary>
+        /// <returns>Created entity filter</returns>
+        public static EntityFilter<T> ByComponent()
+        {
+            return new EntityFilter<T>();
+        }
+        
+        /// <summary>
+        /// Convenience static method that creates an entity filter that matches entities
+        /// that both contain a component of given type and satisfy the given predicate.
+        /// </summary>
+        /// <param name="predicate">Predicate that is defined for given component type</param>
+        /// <returns>Created entity filter</returns>
+        public static EntityFilter<T> ByPredicate(Func<T, bool> predicate)
+        {
+            return new EntityFilter<T>(predicate);
+        }
     }
 }
