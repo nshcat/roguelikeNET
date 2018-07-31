@@ -230,7 +230,7 @@ namespace game.EntityComponent
                 component.Construct(subObject);
              
                 // Add it to entity
-                e.Components.Add(currentComponent, component);
+                e.AddComponent(currentComponent, component);
             }
             
             // Do the same with all registered base entities/templates
