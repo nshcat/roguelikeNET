@@ -87,13 +87,23 @@ namespace game.EntityComponent
         }
 
         /// <summary>
-        /// Checks whether a given type is a component
+        /// Checks whether a given type is a component. This also includes abstract base classes.
         /// </summary>
         /// <param name="t">Type to check</param>
         /// <returns>Flag indicating if given type is a component</returns>
         public static bool IsComponent(Type t)
         {
             return typeof(IComponent).IsAssignableFrom(t) && typeof(IComponent) != t;
+        }
+
+        /// <summary>
+        /// Checks whether a given type is a component. This excludes abstract base classes.
+        /// </summary>
+        /// <param name="t">Type to check</param>
+        /// <returns>Flag indicating if given type is a non-abstract component</returns>
+        public static bool IsNonAbstractComponent(Type t)
+        {
+            return IsComponent(t) && !t.IsAbstract;
         }
 
         
