@@ -12,6 +12,10 @@ namespace game.EntityComponent
     /// </summary>
     public class EntityQueryResult : IEnumerable<Entity>
     {
+        /// <summary>
+        /// An enumerable storing the set of entities that resulted from the query
+        /// that created this instance
+        /// </summary>
         protected IEnumerable<Entity> Result
         {
             get;
@@ -25,7 +29,34 @@ namespace game.EntityComponent
         internal EntityQueryResult(IEnumerable<Entity> result)
         {
             Result = result;
-        }     
+        }
+   
+        /// <summary>
+        /// Get all entities that satisfy the given entity filter.
+        /// </summary>
+        /// <param name="filter">Entity filter to use</param>
+        /// <returns>Collection of entities as result of filter operation</returns>
+        public EntityQueryResult GetEntities(IEntityFilter filter)
+        {
+            var result = Result
+                .Where(x => filter.Apply(x));
+            
+            return new EntityQueryResult(result);
+        }
+
+        /// <summary>
+        /// Get all entities that satisfy all given filters.
+        /// </summary>
+        /// <param name="filters">Collection of filters that entities have to satisfy</param>
+        /// <returns>Collection of entities as result of filter operation</returns>
+        public EntityQueryResult GetEntities(params IEntityFilter[] filters)
+        {
+            var result = Result
+                .Where(x => filters
+                    .All(y => y.Apply(x)));
+            
+            return new EntityQueryResult(result);
+        }
         
         /// <summary>
         /// Get all entities that contain a component of given type that satisfies the given predicate
