@@ -32,6 +32,8 @@ namespace game
         private TaskProgress prog = new TaskProgress("Starting generator", 0, 1, false);
 
         private InputMapper testMapping = new InputMapper("test");
+        
+        private LifetimeSystem system = new LifetimeSystem();
 
         public TestScene()
         {
@@ -56,6 +58,8 @@ namespace game
         
         public void update(long elapsedTicks)
         {
+            system.Update(elapsedTicks);     
+            
             if (cntr.UpdateSimple(elapsedTicks))
             {
                 l.Intensity = 0.7f * ((float) rnd.NextDouble() / 2.0f) + 0.5f;
