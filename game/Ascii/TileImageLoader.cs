@@ -34,7 +34,7 @@ namespace game.Ascii
                 }
                 catch (Exception e)
                 {
-                    Logger.postMessage(SeverityLevel.Fatal, "TileImageLoader", String.Format("Could not load asset file \"{0}\": {1}", name, e.Message));
+                    Logger.PostMessageTagged(SeverityLevel.Fatal, "TileImageLoader", String.Format("Could not load asset file \"{0}\": {1}", name, e.Message));
                     throw;
                 }
 
@@ -47,13 +47,13 @@ namespace game.Ascii
                 // At least one layer needs to be present.
                 if (rawImage.LayerCount <= 0)
                 {
-                    Logger.postMessage(SeverityLevel.Fatal, "TileImageLoader", String.Format("Requested TileImage asset \"{0}\" does not contain any layers", name));
+                    Logger.PostMessageTagged(SeverityLevel.Fatal, "TileImageLoader", String.Format("Requested TileImage asset \"{0}\" does not contain any layers", name));
                     throw new ArgumentException();
                 }
                 
                 if (rawImage.LayerCount > 1) // Warn about ignored layers
                 {
-                    Logger.postMessage(SeverityLevel.Warning, "TileImageLoader", String.Format("Requested TileImage asset \"{0}\" contains extra layers which are ignored", name));
+                    Logger.PostMessageTagged(SeverityLevel.Warning, "TileImageLoader", String.Format("Requested TileImage asset \"{0}\" contains extra layers which are ignored", name));
                 }
 
                 // This is safe to do now, because we checked the amount of layers.

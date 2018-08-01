@@ -52,7 +52,7 @@ namespace game.Ascii
         {
             // Check for space
             if(!Native.LightingNative.lighting_has_space(1))
-                Logger.postMessage(SeverityLevel.Warning, "Screen", "Not enough slots left to create new light");
+                Logger.PostMessageTagged(SeverityLevel.Warning, "Screen", "Not enough slots left to create new light");
             else
             {
                 l.Position = p;

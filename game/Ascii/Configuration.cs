@@ -28,7 +28,7 @@ namespace game.Ascii
             }
             else
             {
-                Logger.postMessage(SeverityLevel.Fatal, "configuration", "Invalid Type T given for Configuration.getValue<T>");
+                Logger.PostMessageTagged(SeverityLevel.Fatal, "configuration", "Invalid Type T given for Configuration.getValue<T>");
                 throw new Exception();
             }
         }
@@ -62,7 +62,7 @@ namespace game.Ascii
                     return (uint) Marshal.ReadInt32(p);
                 
                 default:
-                    Logger.postMessage(SeverityLevel.Fatal, "configuration", "Invalid Type T given for Configuration.getValue<T>");
+                    Logger.PostMessageTagged(SeverityLevel.Fatal, "configuration", "Invalid Type T given for Configuration.getValue<T>");
                     throw new Exception();
             }
 

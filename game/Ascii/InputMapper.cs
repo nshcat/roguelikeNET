@@ -322,7 +322,7 @@ namespace game.Ascii
             // Check if the schema file actually exists
             if (!File.Exists(SchemaFilePath))
             {
-                Logger.postMessage(SeverityLevel.Fatal, "InputMapper", String.Format("Schema file for input mapping \"{0}\" does not exist!", Identifier));
+                Logger.PostMessageTagged(SeverityLevel.Fatal, "InputMapper", String.Format("Schema file for input mapping \"{0}\" does not exist!", Identifier));
                 throw new ArgumentException("Input mapping schema file not found");
             }
             
@@ -347,7 +347,7 @@ namespace game.Ascii
                         // All entries need to be objects
                         if (entry.Type != JTokenType.Object)
                         {
-                            Logger.postMessage(SeverityLevel.Fatal, "InputMapper", String.Format("Expected JSON object in schema definition, got \"{0}\" instead", entry.Type.ToString()));
+                            Logger.PostMessageTagged(SeverityLevel.Fatal, "InputMapper", String.Format("Expected JSON object in schema definition, got \"{0}\" instead", entry.Type.ToString()));
                             throw new ArgumentException("Expected JSON object in schema definition");                               
                         }
 
@@ -361,7 +361,7 @@ namespace game.Ascii
             }
             catch (Exception e)
             {
-                Logger.postMessage(SeverityLevel.Fatal, "InputMapper", String.Format("Failed to load input mapping schema file: {0}", e.Message));
+                Logger.PostMessageTagged(SeverityLevel.Fatal, "InputMapper", String.Format("Failed to load input mapping schema file: {0}", e.Message));
                 throw;
             }  
         }
@@ -393,14 +393,14 @@ namespace game.Ascii
                         // All entries need to be objects
                         if (entry.Value.Type != JTokenType.Object)
                         {
-                            Logger.postMessage(SeverityLevel.Fatal, "InputMapper", String.Format("Expected JSON object in key binding override file, got \"{0}\" instead", entry.Value.Type.ToString()));
+                            Logger.PostMessageTagged(SeverityLevel.Fatal, "InputMapper", String.Format("Expected JSON object in key binding override file, got \"{0}\" instead", entry.Value.Type.ToString()));
                             throw new ArgumentException("Expected JSON object in schema definition");                               
                         }
 
                         // Check that a schema entry actually exists for given identifier
                         if (!Schema.ContainsKey(entry.Key))
                         {
-                            Logger.postMessage(SeverityLevel.Fatal, "InputMapper", String.Format("Unknown action identifier \"{0}\" in override file for key map \"{1}\"", entry.Key, Identifier));
+                            Logger.PostMessageTagged(SeverityLevel.Fatal, "InputMapper", String.Format("Unknown action identifier \"{0}\" in override file for key map \"{1}\"", entry.Key, Identifier));
                             throw new ArgumentException("Unknown action identifier in override file");
                         }
                         
@@ -412,7 +412,7 @@ namespace game.Ascii
             }
             catch (Exception e)
             {
-                Logger.postMessage(SeverityLevel.Fatal, "InputMapper", String.Format("Failed to load input mapping schema file: {0}", e.Message));
+                Logger.PostMessageTagged(SeverityLevel.Fatal, "InputMapper", String.Format("Failed to load input mapping schema file: {0}", e.Message));
                 throw;
             }  
         }

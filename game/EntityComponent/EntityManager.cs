@@ -153,7 +153,7 @@ namespace game.EntityComponent
             // Check if the type actually exists
             if (!HasEntityType(type))
             {
-                Logger.postMessage(SeverityLevel.Fatal, "EntityManager", String.Format("Unknown entity type \"{0}\"", type));
+                Logger.PostMessageTagged(SeverityLevel.Fatal, "EntityManager", String.Format("Unknown entity type \"{0}\"", type));
                 throw new UnknownEntityTypeException();
             }
             
@@ -163,7 +163,7 @@ namespace game.EntityComponent
             // Check if constructing entities of this type is actually allowed
             if (info.IsTemplate)
             {
-                Logger.postMessage(SeverityLevel.Fatal, "EntityManager",
+                Logger.PostMessageTagged(SeverityLevel.Fatal, "EntityManager",
                     String.Format("Entities of type \"{0}\" cannot be constructed, since type was defined to be a template", type));
                 throw new UnknownEntityTypeException();
             }
@@ -205,10 +205,10 @@ namespace game.EntityComponent
                 // entity. This could indicate a circular dependency
                 if (e.HasComponent(componentType))
                 {
-                    Logger.postMessage(SeverityLevel.Fatal, "EntityManager",
+                    Logger.PostMessageTagged(SeverityLevel.Fatal, "EntityManager",
                         String.Format("Found duplicate component type while constructing entity of type \"{0}\": \"{1}\"", e.TypeName, currentComponent));
                     
-                    Logger.postMessage(SeverityLevel.Info, "EntityManager", "This could indicate a circular dependency in the entity definition");
+                    Logger.PostMessageTagged(SeverityLevel.Info, "EntityManager", "This could indicate a circular dependency in the entity definition");
                     
                     throw new EntityDependencyException("Multiple components of same type detected");
                 }
@@ -222,7 +222,7 @@ namespace game.EntityComponent
                 // Check for possible failure
                 if (component == null)
                 {
-                    Logger.postMessage(SeverityLevel.Fatal, "EntityManager", String.Format("Could not create instance of component \"{0}\"", currentComponent));
+                    Logger.PostMessageTagged(SeverityLevel.Fatal, "EntityManager", String.Format("Could not create instance of component \"{0}\"", currentComponent));
                     throw new Exception(String.Format("Could not create instance of component \"{0}\"", currentComponent));
                 }
 
@@ -260,7 +260,7 @@ namespace game.EntityComponent
         public static void Destroy(Guid id)
         {
             if(!HasEntity(id))
-                Logger.postMessage(SeverityLevel.Warning, "EntityManager", String.Format("Tried to destroy non-existing entity with id \"{0}\"", id));
+                Logger.PostMessageTagged(SeverityLevel.Warning, "EntityManager", String.Format("Tried to destroy non-existing entity with id \"{0}\"", id));
 
             Entities.Remove(id);
         }
@@ -317,7 +317,7 @@ namespace game.EntityComponent
                 }
                 catch (Exception e)
                 {
-                    Logger.postMessage(SeverityLevel.Fatal, "EntityManager",
+                    Logger.PostMessageTagged(SeverityLevel.Fatal, "EntityManager",
                         String.Format("Failed to load entity definition file \"{0}\": {1}", Path.GetFileName(file), e.Message));
                     
                     throw;
@@ -336,7 +336,7 @@ namespace game.EntityComponent
                 {
                     if (!HasEntityType(dependency))
                     {
-                        Logger.postMessage(SeverityLevel.Fatal, "EntityManager",
+                        Logger.PostMessageTagged(SeverityLevel.Fatal, "EntityManager",
                             String.Format("Entity type \"{0}\" depends on invalid entity/template type \"{1}\"", type.Name, dependency));
                         
                         throw new EntityDependencyException();

@@ -49,8 +49,8 @@ namespace game.EntityComponent
                     var message = baseId == null ? "Non-abstract component was used as base class"
                         : String.Format("Non-abstract component was used as base class: \"{0}\" derives from \"{1}\"", id, baseId);
 
-                    Logger.postMessage(SeverityLevel.Fatal, "ComponentManager", message);
-                    Logger.postMessage(SeverityLevel.Info, "ComponentManager", "Using non-abstract components as base class is not yet supported");
+                    Logger.PostMessageTagged(SeverityLevel.Fatal, "ComponentManager", message);
+                    Logger.PostMessageTagged(SeverityLevel.Info, "ComponentManager", "Using non-abstract components as base class is not yet supported");
                     throw new ArgumentException("Non-abstract component was used as base class");
                 }
                             
@@ -58,7 +58,7 @@ namespace game.EntityComponent
                 // Insert type into cache
                 ComponentTypes.Add(id, t);
                 
-                Logger.postMessage(SeverityLevel.Debug, "ComponentManager", String.Format("Found component \"{0}\"", id));
+                Logger.PostMessageTagged(SeverityLevel.Debug, "ComponentManager", String.Format("Found component \"{0}\"", id));
             }
         }
         

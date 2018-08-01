@@ -66,10 +66,10 @@ namespace game
             }
 
             if(testMapping.HasInput(TestActions.ActionUp))
-                Logger.postMessage(SeverityLevel.Debug, "InputTest", "\"ActionUp\" was pressed");
+                Logger.PostMessageTagged(SeverityLevel.Debug, "InputTest", "\"ActionUp\" was pressed");
             
             if(testMapping.HasInput(TestActions.ActionDown))
-                Logger.postMessage(SeverityLevel.Debug, "InputTest", "\"ActionDown\" was pressed");
+                Logger.PostMessageTagged(SeverityLevel.Debug, "InputTest", "\"ActionDown\" was pressed");
             
             if (Input.hasKey(Key.Enter) && !hasSpawned)
             {

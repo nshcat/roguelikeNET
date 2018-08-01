@@ -31,7 +31,7 @@ namespace game
                 {
                     EntityManager.Destroy(entity.UniqueID);
                     
-                    Logger.postMessage(SeverityLevel.Debug,
+                    Logger.PostMessageTagged(SeverityLevel.Debug,
                         "LifetimeSystem", $"Destroyed entity of type \"{entity.TypeName}\" because maximum lifetime was reached");
                 }
                 else
