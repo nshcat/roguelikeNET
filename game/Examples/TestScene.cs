@@ -34,6 +34,7 @@ namespace game
         private InputMapper testMapping = new InputMapper("test");
         
         private LifetimeSystem system = new LifetimeSystem();
+        private TestObserverSystem system2 = new TestObserverSystem();
 
         public TestScene()
         {
@@ -59,6 +60,7 @@ namespace game
         public void update(long elapsedTicks)
         {
             system.Update(elapsedTicks);     
+            system2.Update(elapsedTicks);
             
             if (cntr.UpdateSimple(elapsedTicks))
             {

@@ -61,7 +61,6 @@ namespace game
             
             CurrentScene = new TestScene();//GUIExampleScene();
             
-
             while (!RenderContext.shouldClose())
             {
                 Input.begin();

@@ -41,7 +41,7 @@ namespace game.EntityComponent
         /// be called with a set of entities chosen based on the currently set filters.
         /// </summary>
         /// <param name="elapsedTicks">The amount of ticks that elapsed since the last update</param>
-        public void Update(long elapsedTicks)
+        public virtual void Update(long elapsedTicks)
         {
             Update(elapsedTicks, EntityManager.AllEntities.GetEntities(Filters.ToArray()));
         }

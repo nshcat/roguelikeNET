@@ -4,7 +4,7 @@ namespace game.Ascii
 {
     /// <summary>
     /// An enumeration that describes the level of importance that is
-    /// associated with a message.
+    /// associated with a log entry.
     /// </summary>
     public enum SeverityLevel
     {
@@ -30,6 +30,8 @@ namespace game.Ascii
             // context.
             if (lines.Length > 0)
             {
+                // When posting multiple related messages, locking is needed in order
+                // to treat the pack of messages as a transaction
                 Native.LoggerNative.logger_lock();
                 Native.LoggerNative.logger_post_message(level, tag, message, false);
 
