@@ -52,11 +52,11 @@ namespace game.EntityComponent
             else
             {
                 // Determine all entities that got removed
-                foreach(var e in LastResult.Where(x => !result.Contains(x)))
+                foreach(var e in LastResult.Except(result))
                     OnEntityRemoved(e);
                 
                 // Determine all entites that got added
-                foreach (var e in result.Where(x => !LastResult.Contains(x)))
+                foreach (var e in result.Except(LastResult))
                     OnEntityAdded(e);
             }
             
