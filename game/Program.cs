@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Policy;
 using game.Ascii;
 using game.EntityComponent;
 using game.EntityComponent.Components;
@@ -57,6 +58,42 @@ namespace game
 
             var r2 = EntityManager.GetEntities<BaseComponent>().ToList();
             
+            
+            
+            var queue = new PriorityQueue<string, int>();
+            
+            /*queue.Enqueue("A", 3);
+            queue.Enqueue("B", 44);
+            queue.Enqueue("C", 1);
+            queue.Enqueue("D", 20);
+            queue.Enqueue("E", 4);
+            queue.Enqueue("F", -4);
+            queue.Enqueue("G", 2);
+            queue.Enqueue("H", 10);
+            queue.Enqueue("I", 1);*/
+            
+            queue.Enqueue("A", 1);
+            queue.Enqueue("B", 2);
+            queue.Enqueue("C", 1);
+            queue.Enqueue("D", 1);
+            queue.Enqueue("E", 1);
+            queue.Enqueue("F", 2);
+            queue.Enqueue("G", 2);
+            queue.Enqueue("H", 1);
+            queue.Enqueue("I", 2);
+
+            /*queue.Remove("C");
+            queue.Remove("I");
+            queue.Remove("H");
+            queue.Remove("F");*/
+            
+            while (queue.Count > 0)
+            {
+                var item = queue.Dequeue();
+                Logger.PostMessage(SeverityLevel.Debug, $"Value: {item.Item}, Priority: {item.Priority}");
+            }
+
+
             Renderer.IsBatchMode = false;
             
             CurrentScene = new TestScene();//GUIExampleScene();
