@@ -1,78 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.InteropServices;
-using game.Ascii.Native;
 
 namespace game.Ascii
 {
     public static class Configuration
     {
-        private static readonly Dictionary<Type, Native.EntryType> TypeMap
-            = new Dictionary<Type, EntryType>()
-            {
-                { typeof(int), EntryType.Int },
-                { typeof(uint), EntryType.UInt },
-                { typeof(float), EntryType.Float },
-                { typeof(double), EntryType.Double },
-                { typeof(string), EntryType.String },
-                { typeof(bool), EntryType.Bool }         
-            };
-        
-        
-        private static Native.EntryType GetEntryType<T>()
+        private static object GetValueImpl<T>(string path)
         {
-            if (TypeMap.ContainsKey(typeof(T)))
-            {
-                return TypeMap[typeof(T)];
-            }
+            var type = typeof(T);
+
+            if (type == typeof(float))
+                return Native.ConfigurationNative.configuration_get_float(path);
+            else if(type == typeof(double))
+                return Native.ConfigurationNative.configuration_get_double(path);
+            else if(type == typeof(int))
+                return Native.ConfigurationNative.configuration_get_int(path);
+            else if(type == typeof(uint))
+                return Native.ConfigurationNative.configuration_get_uint(path);
+            else if(type == typeof(string))
+                return Memory.PtrToString(Native.ConfigurationNative.configuration_get_string(path));
+            else if(type == typeof(bool))
+                return Native.ConfigurationNative.configuration_get_boolean(path);
             else
             {
-                Logger.PostMessageTagged(SeverityLevel.Fatal, "configuration", "Invalid Type T given for Configuration.getValue<T>");
-                throw new Exception();
+                Logger.PostMessageTagged(SeverityLevel.Fatal, "Configuration", $"Unsupported type in GetValue: {type}");
+                throw new ArgumentException($"Unsupported type in GetValue: {type}");
             }
         }
 
-        private static Object UnpackValue<T>(IntPtr p)
-        {
-            var type = GetEntryType<T>();
-
-            switch (type)
-            {
-                case EntryType.String:
-                    return Memory.PtrToString(p);
-                
-                case EntryType.Bool:
-                    return Marshal.ReadByte(p) != 0;
-
-                case EntryType.Float:
-                    Single[] fbuf = new Single[1];
-                    Marshal.Copy(p, fbuf, 0, 1);
-                    return fbuf[0];
-
-                case EntryType.Double:
-                    Double[] dbuf = new Double[1];
-                    Marshal.Copy(p, dbuf, 0, 1);
-                    return dbuf[0];
-                
-                case EntryType.Int: // TODO: Is the int really always 32 bits? Check that in libascii!
-                    return Marshal.ReadInt32(p);
-                
-                case EntryType.UInt:
-                    return (uint) Marshal.ReadInt32(p);
-                
-                default:
-                    Logger.PostMessageTagged(SeverityLevel.Fatal, "configuration", "Invalid Type T given for Configuration.getValue<T>");
-                    throw new Exception();
-            }
-
-        }
-        
         public static T GetValue<T>(string path)
         {
-            var valPtr = Native.ConfigurationNative.configuration_get(GetEntryType<T>(), path);
-
-            return (T)UnpackValue<T>(valPtr);
+            return (T)GetValueImpl<T>(path);
         }
     }
 }

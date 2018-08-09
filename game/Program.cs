@@ -92,8 +92,7 @@ namespace game
                 var item = queue.Dequeue();
                 Logger.PostMessage(SeverityLevel.Debug, $"Value: {item.Item}, Priority: {item.Priority}");
             }
-
-
+            
             Renderer.IsBatchMode = false;
             
             CurrentScene = new TestScene();//GUIExampleScene();

@@ -11,6 +11,6 @@ namespace game.Ascii.Native
         /// <param name="argc">Number of command line arguments</param>
         /// <param name="argv">Command line arguments</param>
         [DllImport("libascii")]
-        public static extern void engine_initialize(ref GameInfo info, Int64 argc, string[] argv);
+        public static extern void engine_initialize(ref GameInfo info, Int32 argc, string[] argv);
     }
 }
