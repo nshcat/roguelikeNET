@@ -323,6 +323,9 @@ namespace game.EntityComponent
                     throw;
                 }
             }
+            
+            Logger.PostMessageTagged(SeverityLevel.Debug, "EntityManager",
+                $"Loaded {TypeInfos.Count} entity types");
         }
 
         /// <summary>
