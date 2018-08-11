@@ -8,6 +8,32 @@ using Newtonsoft.Json.Linq;
 namespace AutoJsonTest
 {
     [Deserializable]
+    public class MethodTest
+    {
+        [Key("mrew")]
+        public int Mrew
+        {
+            get;
+            set;
+        }
+
+        public bool AfterTriggered = false;
+        public bool BeforeTriggered = false;
+
+        [AfterDeserialization]
+        private void AfterDeserialization(JObject o)
+        {
+            AfterTriggered = true;
+        }
+        
+        [BeforeDeserialization]
+        private void BeforeDeserialization(JObject o)
+        {
+            BeforeTriggered = true;
+        }
+    }
+    
+    [Deserializable]
     public class Test
     {     
         [Key("meow")]
@@ -214,6 +240,17 @@ namespace AutoJsonTest
             Assert.Equal(1337, Deserialize(src).Meow);
         }
 
+        [Fact]
+        public void TestPreAndPost()
+        {
+            var src = "{ \"mrew\" : 42 }";
+
+            var instance = JsonLoader.Deserialize<MethodTest>(JObject.Parse(src));
+            
+            Assert.True(instance.BeforeTriggered);
+            Assert.True(instance.AfterTriggered);    
+        }
+        
         [Fact]
         public void TestPopulate()
         {

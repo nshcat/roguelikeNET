@@ -14,6 +14,18 @@ namespace game.AutoJson
         
     }
     
+    [AttributeUsage(AttributeTargets.Method)]
+    public class AfterDeserialization : Attribute
+    {
+        
+    }
+    
+    [AttributeUsage(AttributeTargets.Method)]
+    public class BeforeDeserialization : Attribute
+    {
+        
+    }
+    
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class Key : Attribute
     {

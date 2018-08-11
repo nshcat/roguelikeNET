@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using game.Ascii;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -33,10 +34,56 @@ namespace game.AutoJson
             return (T) Deserialize(Activator.CreateInstance<T>(), typeof(T), t);
         }
 
+        private static void CallPredeserializationMethods(object instance, Type type, JObject jobj)
+        {
+            foreach (var method in type.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (Attribute.IsDefined(method, typeof(BeforeDeserialization)))
+                {
+                    // Call method with current JSON object, but only if signature is matching
+                    if (method.GetParameters().Length != 1 || method.GetParameters()[0].ParameterType != typeof(JObject))
+                    {
+                        Logger.PostMessageTagged(SeverityLevel.Warning, "JsonLoader",
+                            $"Method marked with \"BeforeDeserialization\" in \"{type}\" has invalid signature. Ignoring");
+                    }
+                    else
+                    {
+                        // Call it
+                        method.Invoke(instance, new[]{jobj});
+                    }                 
+                }
+            }
+        }
+        
+        private static void CallPostdeserializationMethods(object instance, Type type, JObject jobj)
+        {
+            foreach (var method in type.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (Attribute.IsDefined(method, typeof(AfterDeserialization)))
+                {
+                    // Call method with current JSON object, but only if signature is matching
+                    if (method.GetParameters().Length != 1 || method.GetParameters()[0].ParameterType != typeof(JObject))
+                    {
+                        Logger.PostMessageTagged(SeverityLevel.Warning, "JsonLoader",
+                            $"Method marked with \"AfterDeserialization\" in \"{type}\" has invalid signature. Ignoring");
+                    }
+                    else
+                    {
+                        // Call it
+                        method.Invoke(instance, new[]{jobj});
+                    }                 
+                }
+            }
+        }
+
         private static object Deserialize(object instance, Type type, JObject t)
         { 
             // Create empty object TODO check for constructor without arguments first
             //var result = Activator.CreateInstance(type);
+            
+            // Check if the given type contains any methods marked with the "BeforeDeserialization" attribute,
+            // and call them
+            CallPredeserializationMethods(instance, type, t);
                  
             // Inspect all properties and fields of type T          
             foreach (var prop in type.GetProperties())
@@ -76,6 +123,10 @@ namespace game.AutoJson
                 }
             }
 
+            // Check if the given type contains any methods marked with the "AfterDeserialization" attribute,
+            // and call them
+            CallPostdeserializationMethods(instance, type, t);
+            
             return instance;
         }
 
