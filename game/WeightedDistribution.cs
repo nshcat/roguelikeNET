@@ -188,20 +188,35 @@ namespace game
         /// <returns>A new value, picked at random from the distribution</returns>
         public T PickValue(Random rng)
         {
+            // Pick random value in [0, 1)
+            var randomValue = rng.NextDouble();
+
+            return PickValue(randomValue);
+        }
+        
+        
+        /// <summary>
+        /// Pick next value, based deterministically on given seed number.
+        /// </summary>
+        /// <param name="val">Seed value in [0, 1).</param>
+        /// <returns>Value corresponding to given input value</returns>
+        /// <remarks>
+        /// For every value x, this function will always return the same output value, given that
+        /// the internal collection is not modified.
+        /// </remarks>
+        public T PickValue(double val)
+        {
             // Normalize first if needed
             if (NeedsNormalization)
                 Normalize();
             
-            // Pick random value in [0, 1)
-            var randomValue = rng.NextDouble();
-
             // Implement russian roulette method of selecting the proper value.
             var currentSum = 0.0;
             foreach (var entry in NormalizedEntries)
             {
                 currentSum += entry.Probability;
 
-                if (randomValue <= currentSum)
+                if (val <= currentSum)
                     return entry.Value;
             }
             
