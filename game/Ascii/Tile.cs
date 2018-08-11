@@ -1,13 +1,23 @@
 ﻿using System;
+using game.AutoJson;
 
 namespace game.Ascii
 {
     using GlyphOrdinal = Byte;
     
+    [AutoJson.Deserializable]
     public class Tile : ICloneable
     {
+        [AutoJson.Key("background")]
+        [AutoJson.Required]
         public Color BackColor { get; set; }
+        
+        [AutoJson.Key("foreground")]
+        [AutoJson.Required]
         public Color FrontColor { get; set; }
+        
+        [AutoJson.Key("glyph")]
+        [AutoJson.Required]
         public GlyphOrdinal Glyph { get; set; }
 
         public Tile(Color backColor, Color frontColor, byte glyph)

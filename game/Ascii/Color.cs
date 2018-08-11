@@ -8,11 +8,20 @@ namespace game.Ascii
     /// This is equivalent to glm::uvec3 on the C++ side.
     /// The range for each component is [0, 255].
     /// </summary>
+    [AutoJson.Deserializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Color : ICloneable
     {
-        private UInt32 r;    
+        [AutoJson.Key("r")]
+        [AutoJson.Required]
+        private UInt32 r;
+        
+        [AutoJson.Key("g")]
+        [AutoJson.Required]
         private UInt32 g;
+        
+        [AutoJson.Key("b")]
+        [AutoJson.Required]
         private UInt32 b;
 
         public Color(uint r, uint g, uint b)
