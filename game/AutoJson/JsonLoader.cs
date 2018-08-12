@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using game.Ascii;
+using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -12,6 +13,44 @@ namespace game.AutoJson
 {
     public static class JsonLoader
     {
+        /// <summary>
+        /// A mapping between type objects and callables that are able to extract a value of just that type
+        /// from a JSON document token.
+        /// </summary>
+        private static Dictionary<Type, Func<JToken, object>> PrimitiveReaders { get; set; } =
+            new Dictionary<Type, Func<JToken, object>>
+            {
+                [typeof(int)] = token => token.Value<int>(),
+                [typeof(uint)] = token => token.Value<uint>(),
+                [typeof(byte)] = token => token.Value<byte>(),
+                [typeof(float)] = token => token.Value<float>(),
+                [typeof(double)] = token => token.Value<double>(),             
+                [typeof(string)] = token => token.Value<string>(),
+                [typeof(long)] = token => token.Value<long>(),
+                [typeof(ulong)] = token => token.Value<ulong>(),
+                [typeof(short)] = token => token.Value<short>(),
+                [typeof(ushort)] = token => token.Value<ushort>()
+            };
+
+        /// <summary>
+        /// A mapping between type objects and the JSON token type that is required top extract a value
+        /// of just that type.
+        /// </summary>
+        private static Dictionary<Type, JTokenType> PrimitiveTypeMap { get; set; } =
+            new Dictionary<Type, JTokenType>
+            {
+                [typeof(int)] = JTokenType.Integer,
+                [typeof(uint)] = JTokenType.Integer,
+                [typeof(byte)] = JTokenType.Integer,
+                [typeof(float)] = JTokenType.Float,
+                [typeof(double)] = JTokenType.Float,
+                [typeof(string)] = JTokenType.String,
+                [typeof(long)] = JTokenType.Integer,
+                [typeof(ulong)] = JTokenType.Integer,
+                [typeof(short)] = JTokenType.Integer,
+                [typeof(ushort)] = JTokenType.Integer
+            };
+
         public static void Populate<T>(T instance, JObject o)
         {
             Deserialize(instance, typeof(T), o);
@@ -197,24 +236,37 @@ namespace game.AutoJson
             }
             else
             {
-                // TODO solve better: dictionary of converter instances         
-                if (t == typeof(string))
-                {
-                    if(elem.Type != JTokenType.String)
-                        throw new ArgumentException("Expected string value");
-
-                    return elem.Value<string>();
-                }
-                else if (t == typeof(int))
-                {
-                    if(elem.Type != JTokenType.Integer)
-                        throw new ArgumentException("Expected int value");
-
-                    return elem.Value<int>();
-                }
-                
-                throw new NotImplementedException($"Deserialization of type {t} is not implemented yet");
+                return ReadPrimitiveType(t, elem);
             }
+        }
+
+        /// <summary>
+        /// Read primitive value (like string, int, float..) from given JSON document token.
+        /// </summary>
+        /// <param name="t">Type of value to read</param>
+        /// <param name="elem">Source JSON document token</param>
+        /// <returns>Deserialized value</returns>
+        private static object ReadPrimitiveType(Type t, JToken elem)
+        {
+            // Check if requested type is supported
+            if (!PrimitiveReaders.ContainsKey(t))
+            {
+                Logger.PostMessageTagged(SeverityLevel.Fatal, "JsonLoader", $"Encountered unsupported type {t}");
+                throw new ArgumentException($"Encountered unsupported type {t}");
+            }
+
+            // Check if the token type matches with the expected type
+            var expectedType = PrimitiveTypeMap[t];
+            if (elem.Type != expectedType)
+            {
+                Logger.PostMessageTagged(SeverityLevel.Fatal, "JsonLoader",
+                    $"Encountered JSON token type mismatch: Expected {elem.Type}, but got {expectedType}");
+                throw new ArgumentException(
+                    $"Encountered JSON token type mismatch: Expected {elem.Type}, but got {expectedType}");
+            }
+
+            // Retrieve registered reader callable and process input
+            return PrimitiveReaders[t].Invoke(elem);
         }
 
         /// <summary>
