@@ -29,7 +29,8 @@ namespace game.AutoJson
                 [typeof(long)] = token => token.Value<long>(),
                 [typeof(ulong)] = token => token.Value<ulong>(),
                 [typeof(short)] = token => token.Value<short>(),
-                [typeof(ushort)] = token => token.Value<ushort>()
+                [typeof(ushort)] = token => token.Value<ushort>(),
+                [typeof(bool)] = token => token.Value<bool>()
             };
 
         /// <summary>
@@ -48,7 +49,8 @@ namespace game.AutoJson
                 [typeof(long)] = JTokenType.Integer,
                 [typeof(ulong)] = JTokenType.Integer,
                 [typeof(short)] = JTokenType.Integer,
-                [typeof(ushort)] = JTokenType.Integer
+                [typeof(ushort)] = JTokenType.Integer,
+                [typeof(bool)] = JTokenType.Boolean
             };
 
         public static void Populate<T>(T instance, JObject o)
