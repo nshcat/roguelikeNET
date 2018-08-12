@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using game.Ascii;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -28,10 +29,10 @@ namespace game.AutoJson
         
         public static T Deserialize<T>(JObject t)
         {
-            if(typeof(T).GetConstructor(Type.EmptyTypes) == null)
-                throw new ArgumentException("Type needs to provide a parameterless constructor in order to be deserialized");
+            if(typeof(T).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public, null, Type.EmptyTypes, null) == null && !typeof(T).IsValueType)
+                throw new ArgumentException($"Type \"{typeof(T)}\"needs to provide a parameterless constructor in order to be deserialized");    
             
-            return (T) Deserialize(Activator.CreateInstance<T>(), typeof(T), t);
+            return (T) Deserialize(ConstructEmpty(typeof(T)), typeof(T), t);
         }
 
         private static void CallPredeserializationMethods(object instance, Type type, JObject jobj)
@@ -141,7 +142,7 @@ namespace game.AutoJson
             // Strings do not have an empty constructor
             if (t == typeof(string))
                 return string.Empty;
-            else return Activator.CreateInstance(t);
+            else return ConstructEmpty(t);
         }
         
         private static object ReadValue(PropertyInfo p, JToken t)
@@ -183,8 +184,8 @@ namespace game.AutoJson
                 // Token needs to be object
                 if(elem.Type != JTokenType.Object)
                     throw new ArgumentException(string.Format("JToken needs to be object to allow deserialization of \"{0}\"", t));
-
-                return Deserialize(Activator.CreateInstance(t), t, (JObject)elem);
+                
+                return Deserialize(ConstructEmpty(t), t, (JObject)elem);
             }
             else if(t.IsEnum) // Enumeration
             {
@@ -212,9 +213,26 @@ namespace game.AutoJson
                     return elem.Value<int>();
                 }
                 
-                throw new NotImplementedException();
+                throw new NotImplementedException($"Deserialization of type {t} is not implemented yet");
             }
-            
+        }
+
+        /// <summary>
+        /// Construct new instance of given type, as if the parameterless constructor was called.
+        /// </summary>
+        /// <param name="t">Type of the object to construct</param>
+        /// <returns>Constructed object</returns>
+        private static object ConstructEmpty(Type t)
+        {
+            // Value types do not offer parameterless constructors
+            if (t.IsValueType && !t.IsEnum)
+            {
+                return FormatterServices.GetUninitializedObject(t);
+            }
+            else
+            {
+                return Activator.CreateInstance(t, true);
+            }
         }
     }
 }
