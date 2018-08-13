@@ -32,7 +32,7 @@ namespace game
             Engine.Initialize(new GameInfo("dragonhoard", "0.0.1", "libascii test", "dragonhoard"), args);
             
             // Initialize important, global systems
-            EntityComponent.EntityManager.Initialize();
+            EntityManager.Initialize();
             TerrainTypeManager.Initialize();
                         
           
@@ -52,6 +52,8 @@ namespace game
                 Renderer.render();
                 RenderContext.endFrame();
             }
+            
+            Engine.Deinitialize();
         }
 
         private long updateTimer()

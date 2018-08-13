@@ -19,5 +19,13 @@ namespace game.Ascii
             
             Native.EngineNative.engine_initialize(ref info, argv.Length, argv);        
         }
+
+        /// <summary>
+        /// Deinitialize the engine global state and all sub systems.
+        /// </summary>
+        public static void Deinitialize()
+        {
+            Native.EngineNative.engine_deinitialize();
+        }
     }
 }

@@ -12,5 +12,12 @@ namespace game.Ascii.Native
         /// <param name="argv">Command line arguments</param>
         [DllImport("libascii")]
         public static extern void engine_initialize(ref GameInfo info, Int32 argc, string[] argv);
+        
+        
+        /// <summary>
+        /// Deinitialize the engine global state and all sub systems.
+        /// </summary>
+        [DllImport("libascii")]
+        public static extern void engine_deinitialize();
     }
 }
