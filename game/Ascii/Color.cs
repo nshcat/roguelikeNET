@@ -23,7 +23,7 @@ namespace game.Ascii
         [AutoJson.Key("b")]
         [AutoJson.Required]
         private UInt32 b;
-
+        
         public Color(uint r, uint g, uint b)
         {
             this.r = r;

@@ -110,6 +110,13 @@ namespace game
                 Tile = new Tile(Color.Black, Color.Red, 63)
             };
 
+        /// <summary>
+        /// Empty default constructor used by AutoJson.
+        /// </summary>
+        private TerrainType()
+        {
+            
+        }
 
         /// <summary>
         /// Do additional work after bulk of deserialization is done. If the type is marked

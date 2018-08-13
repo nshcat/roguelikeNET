@@ -97,6 +97,12 @@ namespace game
                             // Deserialize terrain type instance from the JSON entry
                             var instance = JsonLoader.Deserialize<TerrainType>(entry as JObject);
                             
+                            // Check for uniquen ID
+                            if (_terrainTypes.ContainsKey(instance.Identifier))
+                            {
+                                throw new ArgumentException($"Terrain type with unique id \"{instance.Identifier}\" already exists, but is redefined in file \"{Path.GetFileName(file)}\"");
+                            }
+                            
                             _terrainTypes.Add(instance.Identifier, instance);
                         }
                     } 

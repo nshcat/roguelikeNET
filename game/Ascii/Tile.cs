@@ -34,6 +34,15 @@ namespace game.Ascii
             Glyph = glyph;
         }
 
+
+        /// <summary>
+        /// Private, parameterless constructor used by AutoJson
+        /// </summary>
+        private Tile()
+        {
+            
+        }
+
         protected bool Equals(Tile other)
         {
             return BackColor.Equals(other.BackColor) && FrontColor.Equals(other.FrontColor) && Glyph == other.Glyph;

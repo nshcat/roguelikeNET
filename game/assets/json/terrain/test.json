@@ -1,0 +1,36 @@
+[
+	{
+		"id" : "dungeon_floor",
+		"name" : "Dungeon Floor",
+		"category" : "Passable",
+		"tile" : {
+			"foreground" : { "r" : 255, "g" : 255, "b" : 255 },
+			"background" : { "r" : 0, "g" : 0, "b" : 0 },
+			"glyph" : 13
+		}
+	},
+	{
+		"id" : "dungeon_floor2",
+		"name" : "Dungeon Floor",
+		"category" : "Passable",
+		"is_varied" : true,
+		"palette" : [
+			{
+				"tile" : {
+					"foreground" : { "r" : 255, "g" : 255, "b" : 255 },
+					"background" : { "r" : 0, "g" : 0, "b" : 0 },
+					"glyph" : 13
+				},
+				"probability" : 0.5
+			},
+			{
+				"tile" : {
+					"foreground" : { "r" : 255, "g" : 255, "b" : 255 },
+					"background" : { "r" : 0, "g" : 0, "b" : 0 },
+					"glyph" : 13
+				},
+				"probability" : 0.5
+			},
+		]
+	}
+]
