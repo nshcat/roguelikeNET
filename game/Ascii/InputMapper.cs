@@ -224,10 +224,10 @@ namespace game.Ascii
         /// <returns>Flag indicating if the keys are pressed</returns>
         protected bool HasInput(KeyBinding kb)
         {
-            if (!Input.hasKey(kb.MainKey))
+            if (!Input.HasKey(kb.MainKey))
                 return false;
 
-            return kb.Modifiers.All(Input.hasKey);
+            return kb.Modifiers.All(Input.HasKey);
         }
 
         /// <summary>

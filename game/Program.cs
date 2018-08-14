@@ -38,13 +38,13 @@ namespace game
           
             Renderer.IsBatchMode = false;
             
-            CurrentScene = new TestScene();//GUIExampleScene();
+            CurrentScene = new MapScene();//TestScene();//GUIExampleScene();
             
             while (!RenderContext.shouldClose())
             {
-                Input.begin();
+                Input.Begin();
                 CurrentScene.update(updateTimer());
-                Input.end();
+                Input.End();
 
                 RenderContext.beginFrame();
                 Screen.Clear();

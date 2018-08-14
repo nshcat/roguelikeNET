@@ -99,10 +99,10 @@ namespace game.Gui
 
             if (isSelected)
             {
-                if (Input.hasKey(Key.Right))
+                if (Input.HasKey(Key.Right))
                     ++value;
                 
-                if (Input.hasKey(Key.Left))
+                if (Input.HasKey(Key.Left))
                     --value;
             }
             
@@ -124,7 +124,7 @@ namespace game.Gui
             AddSelectableControl(new Button(CalculatePosition(), text, style, isSelected));
             UpdateVerticalPosition();
 
-            return (isSelected, isSelected && Input.hasKey(Key.Enter));
+            return (isSelected, isSelected && Input.HasKey(Key.Enter));
         }
         
         /// <summary>
@@ -306,10 +306,10 @@ namespace game.Gui
                 currentSelection = selectableCount - 1;
             
             // Process selection input
-            if (Input.hasKey(Key.Up))
+            if (Input.HasKey(Key.Up))
                 currentSelection = Math.Max(0, currentSelection - 1);
 
-            if (Input.hasKey(Key.Down))
+            if (Input.HasKey(Key.Down))
                 currentSelection = Math.Min(selectableCount - 1, currentSelection + 1);
         }
         

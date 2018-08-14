@@ -73,7 +73,7 @@ namespace game
             if(testMapping.HasInput(TestActions.ActionDown))
                 Logger.PostMessageTagged(SeverityLevel.Debug, "InputTest", "\"ActionDown\" was pressed");
             
-            if (Input.hasKey(Key.Enter) && !hasSpawned)
+            if (Input.HasKey(Key.Enter) && !hasSpawned)
             {
                 //new MapGenerator(p => this.prog = p, new Dimensions(1500U, 1500U), new Random().Next(), outImg).Run();
                 //new TestBackgroundTask(p => this.prog = p).Run();

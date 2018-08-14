@@ -11,17 +11,9 @@ namespace game.Ascii
     [AutoJson.Deserializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Color : ICloneable
-    {
-        [AutoJson.Key("r")]
-        [AutoJson.Required]
+    {        
         private UInt32 r;
-        
-        [AutoJson.Key("g")]
-        [AutoJson.Required]
         private UInt32 g;
-        
-        [AutoJson.Key("b")]
-        [AutoJson.Required]
         private UInt32 b;
         
         public Color(uint r, uint g, uint b)
@@ -42,6 +34,8 @@ namespace game.Ascii
             checkRanges();
         }
         
+        [AutoJson.Key("r")]
+        [AutoJson.Required]
         public uint R
         {
             get => r;
@@ -52,6 +46,8 @@ namespace game.Ascii
             }
         }
 
+        [AutoJson.Key("g")]
+        [AutoJson.Required]
         public uint G
         {
             get => g;
@@ -62,6 +58,8 @@ namespace game.Ascii
             }
         }
 
+        [AutoJson.Key("b")]
+        [AutoJson.Required]
         public uint B
         {
             get => b;

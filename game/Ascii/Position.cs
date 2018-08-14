@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Xml.Serialization;
 
 namespace game.Ascii
 {
@@ -89,6 +90,22 @@ namespace game.Ascii
         public static Position operator +(Position lhs, Position rhs)
         {
             return new Position(lhs.X + rhs.X, lhs.Y + rhs.Y);
+        }
+
+        // TODO fix this
+        public static Position operator -(Position lhs, Position rhs)
+        {
+            var x = ((int) lhs.X - (int) rhs.X);
+
+            if (x < 0)
+                x = 0;
+            
+            var y = ((int) lhs.Y - (int) rhs.Y);
+
+            if (y < 0)
+                y = 0;
+            
+            return new Position(x, y);
         }
         
         public static Position Origin = new Position(0, 0);
